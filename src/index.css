@@ -1,10 +1,24 @@
-[data-js="root"] {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Atomic+Age&family=Bree+Serif&family=Inconsolata:wght@200..900&family=Telex&display=swap');
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-h1{
-  color: #006eff;
+:root {
+  --color-light: #eeeeee;
+  --color-primary: #0061fe;
+  --color-secondary: #c6c6c6;
+  --color-gray: #585858;
+  --color-dark: #323232;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Telex', serif;
+  margin: 0;
+  padding: 0;
 }
