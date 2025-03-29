@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Atomic+Age&family=Bree+Serif&family=Inconsolata:wght@200..900&family=Telex&display=swap');
 
-#root {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 :root {
   --color-light: #eeeeee;
   --color-primary: #0061fe;
@@ -21,4 +13,13 @@
   font-family: 'Telex', serif;
   margin: 0;
   padding: 0;
+}
+
+body {
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

@@ -38,115 +38,131 @@ const PendingForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          Técnico do Plantão:
-          <select
-            value={state.tecnico}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'tecnico',
-                value: e.target.value,
-              })
-            }
-          >
-            <option value="Adriano">Adriano</option>
-            <option value="Joao">Joao</option>
-            <option value="Marcio">Marcio</option>
-            <option value="Yago">Yago</option>
-          </select>
-        </label>
-        <label>
-          Data do Plantão:
-          <input
-            type="date"
-            value={state.data}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'data',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          Local do Chamado:
-          <input
-            type="text"
-            value={state.local}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'local',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          Responsável do Contato:
-          <input
-            type="text"
-            value={state.responsavel}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'responsavel',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          Hora de Início:
-          <input
-            type="time"
-            value={state.horaInicio}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'horaInicio',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          Hora Final:
-          <input
-            type="time"
-            value={state.horaFinal}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'horaFinal',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          Descrição do Ocorrido:
-          <textarea
-            value={state.descricao}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'descricao',
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={state.gerouPendencia}
-            onChange={() => dispatch({ type: 'TOGGLE_PENDENCIA' })}
-          />
-          Gerou Pendência
-        </label>
+        <div>
+          <label>
+            Técnico do Plantão:
+            <select
+              value={state.tecnico}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'tecnico',
+                  value: e.target.value,
+                })
+              }
+            >
+              <option value="Adriano">Adriano</option>
+              <option value="Joao">Joao</option>
+              <option value="Marcio">Marcio</option>
+              <option value="Yago">Yago</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>
+            Data do Plantão:
+            <input
+              type="date"
+              value={state.data}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'data',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Local do Chamado:
+            <input
+              type="text"
+              value={state.local}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'local',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Responsável do Contato:
+            <input
+              type="text"
+              value={state.responsavel}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'responsavel',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Hora de Início:
+            <input
+              type="time"
+              value={state.horaInicio}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'horaInicio',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Hora Final:
+            <input
+              type="time"
+              value={state.horaFinal}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'horaFinal',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Descrição do Ocorrido:
+            <textarea
+              value={state.descricao}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'descricao',
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={state.gerouPendencia}
+              onChange={() => dispatch({ type: 'TOGGLE_PENDENCIA' })}
+            />
+            Gerou Pendência
+          </label>
+        </div>
         {state.gerouPendencia && (
           <label>
             Descrição da Pendência:
