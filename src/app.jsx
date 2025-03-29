@@ -1,7 +1,9 @@
+import { PendingForm } from './componets/PendingForm'
+
 const App = () => {
   return (
     <>
-      <h1>Boilerplace + React</h1>
+      <PendingForm />
     </>
   )
 }
