@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react'
+import { Container } from './style'
 
 const initialState = {
   tecnico: 'Marcio',
@@ -36,7 +37,7 @@ const PendingForm = () => {
   }
 
   return (
-    <div>
+    <Container>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -213,7 +214,7 @@ const PendingForm = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   )
 }
 
