@@ -33,6 +33,12 @@ const PendingForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
 
+  const formatDate = (date) => {
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(date).toLocaleDateString('pt-BR', options);
+  };
+  
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setRelatorios([...relatorios, state])
@@ -179,7 +185,10 @@ const PendingForm = () => {
 
         }
       <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })} >{ state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto' }</AddBtn>
-      <h1>Plantão Referente ao dia: {state.data}</h1>
+      <h1>Plantão Referente ao dia: {formatDate(state.data)}</h1>
+      <h2>Valor do plantão: 
+        {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
+      </h2>
       <GridRelatorio className="relatorios-grid">
         {relatorios.map((relatorio, index) => (
             <div key={index}>
