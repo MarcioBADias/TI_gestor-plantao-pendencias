@@ -1,9 +1,12 @@
 import React, { useReducer, useState } from 'react'
+import { FaCog } from "react-icons/fa"
 import { AddBtn, CardPlantao, Container, Content, GridRelatorio, Input, TextArea } from './style'
 
 const initialState = {
   tecnico: 'Marcio',
-  data: new Date().toISOString().split('T')[0],
+  data: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .split('T')[0], 
   local: '',
   responsavel: '',
   horaInicio: '',
@@ -32,12 +35,18 @@ const reducer = (state, action) => {
 const PendingForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
+  const [editandoData, setEditandoData] = useState(false);
+  const [dataEditada, setDataEditada] = useState(state.data);
 
   const formatDate = (date) => {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(date).toLocaleDateString('pt-BR', options);
   };
   
+  const handleSalvarData = () => {
+    dispatch({ type: "SET_FIELD", field: "data", value: dataEditada });
+    setEditandoData(false);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -185,7 +194,24 @@ const PendingForm = () => {
 
         }
       <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })} >{ state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto' }</AddBtn>
-      <h1>Plantão Referente ao dia: {formatDate(state.data)}</h1>
+      <h1>
+  Plantão Referente ao dia: {formatDate(state.data)}
+  <FaCog 
+    style={{ marginLeft: 10, cursor: "pointer" }} 
+    onClick={() => setEditandoData(true)} 
+  />
+</h1>
+
+{editandoData && (
+  <div>
+    <Input 
+      type="date" 
+      value={dataEditada} 
+      onChange={(e) => setDataEditada(e.target.value)} 
+    />
+    <button onClick={handleSalvarData}>Salvar</button>
+  </div>
+)}
       <h2>Valor do plantão: 
         {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
       </h2>
@@ -194,10 +220,6 @@ const PendingForm = () => {
             <div key={index}>
               <CardPlantao key={index} className="relatorio-card">
                 <p>
-                <strong>Data:</strong> {relatorio.data}
-                <p>
-                  <strong>Data:</strong> {relatorio.data}
-                </p>
                   <strong>Técnico:</strong> {relatorio.tecnico}
                 </p>
                 <p>
