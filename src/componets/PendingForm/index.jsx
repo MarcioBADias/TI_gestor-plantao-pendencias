@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react'
 import { FaCog } from "react-icons/fa"
-import { AddBtn, CardPlantao, Container, Content, GridRelatorio, Input, TextArea } from './style'
+import { AddBtn, CardPlantao, CheckBox, Container, Content, GridRelatorio, Input, TextArea } from './style'
 
 const initialState = {
   tecnico: 'Marcio',
@@ -152,7 +152,7 @@ const PendingForm = () => {
               }
             />
         </Content>
-        <Content>
+        {/* <Content>
             <TextArea
               placeholder='Descrição do Ocorrido:'
               value={state.descricao}
@@ -164,14 +164,16 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
+        </Content> */}
         <Content>
-            <Input
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
+            <CheckBox
               type="checkbox"
               checked={state.gerouPendencia}
               onChange={() => dispatch({ type: 'TOGGLE_PENDENCIA' })}
             />
-            Gerou Pendência
+            Gerou Pendência ?
+          </div>
         </Content>
         {state.gerouPendencia && (
           <Content>
@@ -234,9 +236,9 @@ const PendingForm = () => {
                 <p>
                   <strong>Hora Final:</strong> {relatorio.horaFinal}
                 </p>
-                <p>
+                {/* <p>
                   <strong>Descrição:</strong> {relatorio.descricao}
-                </p>
+                </p> */}
                 {relatorio.gerouPendencia && (
                   <p>
                     <strong>Pendência:</strong> {relatorio.pendencia}
