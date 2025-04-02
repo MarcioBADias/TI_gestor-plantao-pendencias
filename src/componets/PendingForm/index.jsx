@@ -62,7 +62,7 @@ const PendingForm = () => {
           alt="Logo"
         />
 
-      <h1 style={{ marginTop:50 }}>
+      <h1>
   Plantão Referente ao dia: {formatDate(state.data)}
   <FaCog 
     style={{ marginLeft: 10, cursor: "pointer" }} 
@@ -83,7 +83,6 @@ const PendingForm = () => {
       <h2>Valor do plantão: 
         {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
       </h2>
-      <h2 style={{ marginTop: 20 }}>Técnico: ___________________________________________</h2>
       <GridRelatorio className="relatorios-grid">
         {relatorios.map((relatorio, index) => (
             <div key={index}>

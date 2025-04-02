@@ -33,7 +33,7 @@ export const Title = styled.h1`
 `
 
 export const GridRelatorio = styled.div`
-align-items: center;
+  align-items: center;
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
@@ -51,10 +51,13 @@ export const CardPlantao = styled.div`
   border-radius: 5px;
   height: 180px;
   padding: 1rem;
-  width: 30vw;
   display: flex;
   flex-direction: column;
   overflow: auto;
   white-space: normal;
   word-break: break-word;
+
+  @media (min-width: 700px) {  
+    width: 30vw;
+  }
 `
