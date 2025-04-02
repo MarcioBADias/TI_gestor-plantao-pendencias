@@ -61,7 +61,62 @@ const PendingForm = () => {
           src="/Logo_noSymbol_BK.png"
           alt="Logo"
         />
-        {
+
+      <h1 style={{ marginTop:50 }}>
+  Plantão Referente ao dia: {formatDate(state.data)}
+  <FaCog 
+    style={{ marginLeft: 10, cursor: "pointer" }} 
+    onClick={() => setEditandoData(true)} 
+  />
+</h1>
+
+{editandoData && (
+  <div>
+    <Input 
+      type="date" 
+      value={dataEditada} 
+      onChange={(e) => setDataEditada(e.target.value)} 
+    />
+    <button onClick={handleSalvarData}>Salvar</button>
+  </div>
+)}
+      <h2>Valor do plantão: 
+        {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
+      </h2>
+      <h2 style={{ marginTop: 20 }}>Técnico: ___________________________________________</h2>
+      <GridRelatorio className="relatorios-grid">
+        {relatorios.map((relatorio, index) => (
+            <div key={index}>
+              <CardPlantao key={index} className="relatorio-card">
+                <p>
+                  <strong>Técnico:</strong> {relatorio.tecnico}
+                </p>
+                <p>
+                  <strong>Local:</strong> {relatorio.local}
+                </p>
+                <p>
+                  <strong>Responsável:</strong> {relatorio.responsavel}
+                </p>
+                <p>
+                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
+                </p>
+                <p>
+                  <strong>Hora Final:</strong> {relatorio.horaFinal}
+                </p>
+                {/* <p>
+                  <strong>Descrição:</strong> {relatorio.descricao}
+                </p> */}
+                {relatorio.gerouPendencia && (
+                  <p>
+                    <strong>Pendência:</strong> {relatorio.pendencia}
+                  </p>
+                )}
+          </CardPlantao>
+            </div>
+        ))}
+      </GridRelatorio>
+
+      {
           state.abrirFormulario &&
       <form onSubmit={handleSubmit}>
         <Content>
@@ -82,7 +137,7 @@ const PendingForm = () => {
               <option value="Yago">Yago</option>
             </select>
         </Content>
-        <Content>
+        {/* <Content>
             <Input
               placeholder='Data do Plantão:'
               type="date"
@@ -95,7 +150,7 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
+        </Content> */}
         <Content>
             <Input
               placeholder='Local do Chamado:'
@@ -195,59 +250,9 @@ const PendingForm = () => {
       </form>
 
         }
+      
       <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })} >{ state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto' }</AddBtn>
-      <h1>
-  Plantão Referente ao dia: {formatDate(state.data)}
-  <FaCog 
-    style={{ marginLeft: 10, cursor: "pointer" }} 
-    onClick={() => setEditandoData(true)} 
-  />
-</h1>
-
-{editandoData && (
-  <div>
-    <Input 
-      type="date" 
-      value={dataEditada} 
-      onChange={(e) => setDataEditada(e.target.value)} 
-    />
-    <button onClick={handleSalvarData}>Salvar</button>
-  </div>
-)}
-      <h2>Valor do plantão: 
-        {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
-      </h2>
-      <GridRelatorio className="relatorios-grid">
-        {relatorios.map((relatorio, index) => (
-            <div key={index}>
-              <CardPlantao key={index} className="relatorio-card">
-                <p>
-                  <strong>Técnico:</strong> {relatorio.tecnico}
-                </p>
-                <p>
-                  <strong>Local:</strong> {relatorio.local}
-                </p>
-                <p>
-                  <strong>Responsável:</strong> {relatorio.responsavel}
-                </p>
-                <p>
-                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
-                </p>
-                <p>
-                  <strong>Hora Final:</strong> {relatorio.horaFinal}
-                </p>
-                {/* <p>
-                  <strong>Descrição:</strong> {relatorio.descricao}
-                </p> */}
-                {relatorio.gerouPendencia && (
-                  <p>
-                    <strong>Pendência:</strong> {relatorio.pendencia}
-                  </p>
-                )}
-          </CardPlantao>
-            </div>
-        ))}
-      </GridRelatorio>
+      
     </Container>
   )
 }

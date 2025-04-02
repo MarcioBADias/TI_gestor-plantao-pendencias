@@ -33,8 +33,8 @@ export const Title = styled.h1`
 `
 
 export const GridRelatorio = styled.div`
+align-items: center;
   display: flex;
-  justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
   padding: 1rem;
