@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react'
 import { FaCog } from "react-icons/fa"
-import { AddBtn, CardPlantao, CheckBox, Container, Content, GridRelatorio, Input, TextArea } from './style'
+import { AddBtn, CardPlantao, CheckBox, Container, Content, GridRelatorio, Input, TextArea, Title } from './style'
 
 const initialState = {
   tecnico: 'Marcio',
@@ -62,13 +62,13 @@ const PendingForm = () => {
           alt="Logo"
         />
 
-      <h1>
+      <Title>
   Plantão Referente ao dia: {formatDate(state.data)}
   <FaCog 
     style={{ marginLeft: 10, cursor: "pointer" }} 
     onClick={() => setEditandoData(true)} 
   />
-</h1>
+</Title>
 
 {editandoData && (
   <div>
@@ -81,40 +81,15 @@ const PendingForm = () => {
   </div>
 )}
       <h2>Valor do plantão: 
-        {formatDate(state.data).includes('domingo') ? 'R$100,00' : formatDate(state.data).includes('sábado')? 'R$100,00' : formatDate(state.data).includes('sexta-feira')? 'R$100,00' : 'R$ 80,00'}
+        {formatDate(state.data).includes('domingo') 
+        ? 'R$100,00' 
+        : formatDate(state.data).includes('sábado')
+        ? 'R$100,00' 
+        : formatDate(state.data).includes('sexta-feira')
+        ? 'R$100,00' 
+        : 'R$ 80,00'}
       </h2>
-      <GridRelatorio className="relatorios-grid">
-        {relatorios.map((relatorio, index) => (
-            <div key={index}>
-              <CardPlantao key={index} className="relatorio-card">
-                <p>
-                  <strong>Técnico:</strong> {relatorio.tecnico}
-                </p>
-                <p>
-                  <strong>Local:</strong> {relatorio.local}
-                </p>
-                <p>
-                  <strong>Responsável:</strong> {relatorio.responsavel}
-                </p>
-                <p>
-                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
-                </p>
-                <p>
-                  <strong>Hora Final:</strong> {relatorio.horaFinal}
-                </p>
-                {/* <p>
-                  <strong>Descrição:</strong> {relatorio.descricao}
-                </p> */}
-                {relatorio.gerouPendencia && (
-                  <p>
-                    <strong>Pendência:</strong> {relatorio.pendencia}
-                  </p>
-                )}
-          </CardPlantao>
-            </div>
-        ))}
-      </GridRelatorio>
-
+      
       {
           state.abrirFormulario &&
       <form onSubmit={handleSubmit}>
@@ -252,6 +227,38 @@ const PendingForm = () => {
       
       <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })} >{ state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto' }</AddBtn>
       
+      <GridRelatorio className="relatorios-grid">
+        {relatorios.map((relatorio, index) => (
+            <div key={index}>
+              <CardPlantao key={index} className="relatorio-card">
+                <p>
+                  <strong>Técnico:</strong> {relatorio.tecnico}
+                </p>
+                <p>
+                  <strong>Local:</strong> {relatorio.local}
+                </p>
+                <p>
+                  <strong>Responsável:</strong> {relatorio.responsavel}
+                </p>
+                <p>
+                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
+                </p>
+                <p>
+                  <strong>Hora Final:</strong> {relatorio.horaFinal}
+                </p>
+                {/* <p>
+                  <strong>Descrição:</strong> {relatorio.descricao}
+                </p> */}
+                {relatorio.gerouPendencia && (
+                  <p>
+                    <strong>Pendência:</strong> {relatorio.pendencia}
+                  </p>
+                )}
+          </CardPlantao>
+            </div>
+        ))}
+      </GridRelatorio>
+
     </Container>
   )
 }
