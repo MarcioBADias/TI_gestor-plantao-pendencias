@@ -67,6 +67,7 @@ const PendingForm = () => {
     fetchReports()
   }, [])
 
+
   const formatDate = (date) => {
     const options = {
       weekday: 'long',
@@ -82,7 +83,6 @@ const PendingForm = () => {
   const handleSaveData = () => {
     dispatch({ type: 'SET_FIELD', field: 'data', value: state.data })
     setEditandoData(false)
-    console.log(state.data)
   }
 
   const handleSubmit = async (e) => {
@@ -279,17 +279,17 @@ const PendingForm = () => {
                 <strong>Responsável:</strong> {relatorio.responsavel}
               </p>
               <p>
-                <strong>Hora de Início:</strong> {relatorio.horaInicio}
+                <strong>Hora de Início:</strong> {relatorio.hora_ini}
               </p>
               <p>
-                <strong>Hora Final:</strong> {relatorio.horaFinal}
+                <strong>Hora Final:</strong> {relatorio.hora_fini}
               </p>
               {/* <p>
                   <strong>Descrição:</strong> {relatorio.descricao}
                 </p> */}
-              {relatorio.gerouPendencia && (
+              {relatorio.pendencias && (
                 <p>
-                  <strong>Pendência:</strong> {relatorio.pendencia}
+                  <strong>Pendência:</strong> {relatorio.pendencias}
                 </p>
               )}
             </CardPlantao>
