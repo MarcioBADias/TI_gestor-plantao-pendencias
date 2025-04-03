@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { FaCog } from 'react-icons/fa'
 import {
@@ -49,7 +49,23 @@ const PendingForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
-  const [dataEditada, setDataEditada] = useState(state.data)
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      const { data, error } = await supabase
+        .from('atendimento')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Erro ao buscar atendimentos:', error.message)
+      } else {
+        setRelatorios(data)
+      }
+    }
+
+    fetchReports()
+  }, [])
 
   const formatDate = (date) => {
     const options = {
