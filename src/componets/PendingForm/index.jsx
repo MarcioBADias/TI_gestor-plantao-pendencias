@@ -1,20 +1,33 @@
 import React, { useReducer, useState } from 'react'
-import { FaCog } from "react-icons/fa"
-import { AddBtn, CardPlantao, CheckBox, Container, Content, GridRelatorio, Input, TextArea, Title } from './style'
+import { createClient } from '@supabase/supabase-js'
+import { FaCog } from 'react-icons/fa'
+import {
+  AddBtn,
+  CardPlantao,
+  CheckBox,
+  Container,
+  Content,
+  GridRelatorio,
+  Input,
+  TextArea,
+  Title,
+} from './style'
+
+const supabaseUrl = 'https://uhxambgdjkmdgoarezto.supabase.co'
+const supabaseKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeGFtYmdkamttZGdvYXJlenRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjM2OTksImV4cCI6MjA1OTE5OTY5OX0.eWbosa73xQPofo4_nantz5gKlLPRFuiYBRcIu0fZTMg'
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 const initialState = {
   tecnico: 'Marcio',
-  data: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
-    .toISOString()
-    .split('T')[0], 
+  data: new Date().toLocaleString('pt-BR'),
   local: '',
   responsavel: '',
   horaInicio: '',
   horaFinal: '',
-  descricao: '',
   gerouPendencia: false,
   pendencia: '',
-  abrirFormulario: false
+  abrirFormulario: false,
 }
 
 const reducer = (state, action) => {
@@ -26,7 +39,7 @@ const reducer = (state, action) => {
     case 'RESET':
       return initialState
     case 'SET_OPENFORM':
-      return {...state, abrirFormulario: !state.abrirFormulario }
+      return { ...state, abrirFormulario: !state.abrirFormulario }
     default:
       return state
   }
@@ -35,21 +48,51 @@ const reducer = (state, action) => {
 const PendingForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
-  const [editandoData, setEditandoData] = useState(false);
-  const [dataEditada, setDataEditada] = useState(state.data);
+  const [editandoData, setEditandoData] = useState(false)
+  const [dataEditada, setDataEditada] = useState(state.data)
 
   const formatDate = (date) => {
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(date).toLocaleDateString('pt-BR', options);
-  };
-  
-  const handleSalvarData = () => {
-    dispatch({ type: "SET_FIELD", field: "data", value: dataEditada });
-    setEditandoData(false);
+    const options = {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }
+    const localDate = new Date(date + 'T00:00:00')
+
+    return localDate.toLocaleDateString('pt-BR', options)
   }
 
-  const handleSubmit = (e) => {
+  const handleSaveData = () => {
+    dispatch({ type: 'SET_FIELD', field: 'data', value: state.data })
+    setEditandoData(false)
+    console.log(state.data)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    const newReport = {
+      tecnico: state.tecnico,
+      created_at: new Date().toLocaleString('sv-SE', {
+        timeZone: 'America/Sao_Paulo',
+      }),
+      local: state.local,
+      responsavel: state.responsavel,
+      hora_ini: state.horaInicio,
+      hora_fini: state.horaFinal,
+      pendencias: state.gerouPendencia ? state.pendencia : '',
+    }
+    const { data, error } = await supabase
+      .from('atendimento')
+      .insert([newReport])
+
+    if (error) {
+      console.error('Erro ao salvar no Supabase:', error.message)
+    } else {
+      console.log('Salvo com sucesso:', data)
+      setRelatorios([...relatorios, newReport])
+      dispatch({ type: 'RESET' })
+    }
     setRelatorios([...relatorios, state])
     dispatch({ type: 'RESET' })
   }
@@ -57,43 +100,49 @@ const PendingForm = () => {
   return (
     <Container>
       <img
-          style={{ maxWidth: '20vw', marginTop: 50 }}
-          src="/Logo_noSymbol_BK.png"
-          alt="Logo"
-        />
+        style={{ maxWidth: '20vw', marginTop: 50 }}
+        src="/Logo_noSymbol_BK.png"
+        alt="Logo"
+      />
 
       <Title>
-  Plantão Referente ao dia: {formatDate(state.data)}
-  <FaCog 
-    style={{ marginLeft: 10, cursor: "pointer" }} 
-    onClick={() => setEditandoData(true)} 
-  />
-</Title>
+        Plantão Referente ao dia: {formatDate(state.data)}
+        <FaCog
+          style={{ marginLeft: 10, cursor: 'pointer' }}
+          onClick={() => setEditandoData(true)}
+        />
+      </Title>
 
-{editandoData && (
-  <div>
-    <Input 
-      type="date" 
-      value={dataEditada} 
-      onChange={(e) => setDataEditada(e.target.value)} 
-    />
-    <button onClick={handleSalvarData}>Salvar</button>
-  </div>
-)}
-      <h2>Valor do plantão: 
-        {formatDate(state.data).includes('domingo') 
-        ? 'R$100,00' 
-        : formatDate(state.data).includes('sábado')
-        ? 'R$100,00' 
-        : formatDate(state.data).includes('sexta-feira')
-        ? 'R$100,00' 
-        : 'R$ 80,00'}
+      {editandoData && (
+        <div>
+          <Input
+            type="date"
+            value={state.data}
+            onChange={(e) =>
+              dispatch({
+                type: 'SET_FIELD',
+                field: 'data',
+                value: e.target.value,
+              })
+            }
+          />
+          <button onClick={handleSaveData}>Salvar</button>
+        </div>
+      )}
+      <h2>
+        Valor do plantão:
+        {formatDate(state.data).includes('domingo')
+          ? 'R$100,00'
+          : formatDate(state.data).includes('sábado')
+            ? 'R$100,00'
+            : formatDate(state.data).includes('sexta-feira')
+              ? 'R$100,00'
+              : 'R$ 80,00'}
       </h2>
-      
-      {
-          state.abrirFormulario &&
-      <form onSubmit={handleSubmit}>
-        <Content>
+
+      {state.abrirFormulario && (
+        <form onSubmit={handleSubmit}>
+          <Content>
             <select
               value={state.tecnico}
               onChange={(e) =>
@@ -110,24 +159,10 @@ const PendingForm = () => {
               <option value="Marcio">Marcio</option>
               <option value="Yago">Yago</option>
             </select>
-        </Content>
-        {/* <Content>
+          </Content>
+          <Content>
             <Input
-              placeholder='Data do Plantão:'
-              type="date"
-              value={state.data}
-              onChange={(e) =>
-                dispatch({
-                  type: 'SET_FIELD',
-                  field: 'data',
-                  value: e.target.value,
-                })
-              }
-            />
-        </Content> */}
-        <Content>
-            <Input
-              placeholder='Local do Chamado:'
+              placeholder="Local do Chamado:"
               type="text"
               value={state.local}
               onChange={(e) =>
@@ -138,10 +173,10 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
-        <Content>
+          </Content>
+          <Content>
             <Input
-              placeholder='Responsável do Contato:'
+              placeholder="Responsável do Contato:"
               type="text"
               value={state.responsavel}
               onChange={(e) =>
@@ -152,10 +187,10 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
-        <Content>
+          </Content>
+          <Content>
             <Input
-              placeholder='Hora de Início:'
+              placeholder="Hora de Início:"
               type="time"
               value={state.horaInicio}
               onChange={(e) =>
@@ -166,10 +201,10 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
-        <Content>
+          </Content>
+          <Content>
             <Input
-              placeholder='Hora Final:'
+              placeholder="Hora Final:"
               type="time"
               value={state.horaFinal}
               onChange={(e) =>
@@ -180,85 +215,71 @@ const PendingForm = () => {
                 })
               }
             />
-        </Content>
-        {/* <Content>
-            <TextArea
-              placeholder='Descrição do Ocorrido:'
-              value={state.descricao}
-              onChange={(e) =>
-                dispatch({
-                  type: 'SET_FIELD',
-                  field: 'descricao',
-                  value: e.target.value,
-                })
-              }
-            />
-        </Content> */}
-        <Content>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} >
-            <CheckBox
-              type="checkbox"
-              checked={state.gerouPendencia}
-              onChange={() => dispatch({ type: 'TOGGLE_PENDENCIA' })}
-            />
-            Gerou Pendência ?
-          </div>
-        </Content>
-        {state.gerouPendencia && (
-          <Content>
-            <TextArea
-              placeholder='Descrição da Pendência:'
-              value={state.pendencia}
-              onChange={(e) =>
-                dispatch({
-                  type: 'SET_FIELD',
-                  field: 'pendencia',
-                  value: e.target.value,
-                })
-              }
-            />
-
           </Content>
-        )}
-        <button type="submit">Salvar Relatório</button>
-      </form>
+          <Content>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <CheckBox
+                type="checkbox"
+                checked={state.gerouPendencia}
+                onChange={() => dispatch({ type: 'TOGGLE_PENDENCIA' })}
+              />
+              Gerou Pendência ?
+            </div>
+          </Content>
+          {state.gerouPendencia && (
+            <Content>
+              <TextArea
+                placeholder="Descrição da Pendência:"
+                value={state.pendencia}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'SET_FIELD',
+                    field: 'pendencia',
+                    value: e.target.value,
+                  })
+                }
+              />
+            </Content>
+          )}
+          <button type="submit">Salvar Relatório</button>
+        </form>
+      )}
 
-        }
-      
-      <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })} >{ state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto' }</AddBtn>
-      
+      <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })}>
+        {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto'}
+      </AddBtn>
+
       <GridRelatorio className="relatorios-grid">
         {relatorios.map((relatorio, index) => (
-            <div key={index}>
-              <CardPlantao key={index} className="relatorio-card">
-                <p>
-                  <strong>Técnico:</strong> {relatorio.tecnico}
-                </p>
-                <p>
-                  <strong>Local:</strong> {relatorio.local}
-                </p>
-                <p>
-                  <strong>Responsável:</strong> {relatorio.responsavel}
-                </p>
-                <p>
-                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
-                </p>
-                <p>
-                  <strong>Hora Final:</strong> {relatorio.horaFinal}
-                </p>
-                {/* <p>
+          <div key={index}>
+            <CardPlantao key={index} className="relatorio-card">
+              <p>
+                <strong>Técnico:</strong> {relatorio.tecnico}
+              </p>
+              <p>
+                <strong>Local:</strong> {relatorio.local}
+              </p>
+              <p>
+                <strong>Responsável:</strong> {relatorio.responsavel}
+              </p>
+              <p>
+                <strong>Hora de Início:</strong> {relatorio.horaInicio}
+              </p>
+              <p>
+                <strong>Hora Final:</strong> {relatorio.horaFinal}
+              </p>
+              {/* <p>
                   <strong>Descrição:</strong> {relatorio.descricao}
                 </p> */}
-                {relatorio.gerouPendencia && (
-                  <p>
-                    <strong>Pendência:</strong> {relatorio.pendencia}
-                  </p>
-                )}
-          </CardPlantao>
-            </div>
+              {relatorio.gerouPendencia && (
+                <p>
+                  <strong>Pendência:</strong> {relatorio.pendencia}
+                </p>
+              )}
+            </CardPlantao>
+          </div>
         ))}
       </GridRelatorio>
-
     </Container>
   )
 }

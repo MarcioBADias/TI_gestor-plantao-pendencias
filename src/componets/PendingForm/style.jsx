@@ -4,7 +4,7 @@ export const Container = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;;
+  margin-top: 2rem;
 `
 export const Content = styled.div`
   margin: 1rem 0;
@@ -57,7 +57,7 @@ export const CardPlantao = styled.div`
   white-space: normal;
   word-break: break-word;
 
-  @media (min-width: 700px) {  
+  @media (min-width: 700px) {
     width: 30vw;
   }
 `
