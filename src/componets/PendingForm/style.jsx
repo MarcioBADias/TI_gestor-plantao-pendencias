@@ -5,6 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
+  padding: 0 2rem;
 `
 export const Content = styled.div`
   margin: 1rem 0;
@@ -32,6 +33,17 @@ export const Title = styled.h1`
   text-align: center;
 `
 
+export const FilterContainer = styled.div`
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: 10px;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+`
+
 export const GridRelatorio = styled.div`
   align-items: center;
   display: flex;
@@ -49,10 +61,10 @@ export const GridRelatorio = styled.div`
 export const CardPlantao = styled.div`
   border: 2px var(--color-dark) solid;
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
   height: 180px;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
   overflow: auto;
   white-space: normal;
   word-break: break-word;
@@ -60,4 +72,9 @@ export const CardPlantao = styled.div`
   @media (min-width: 700px) {
     width: 30vw;
   }
+`
+
+export const MenuIcons = styled.div`
+  height: 50px;
+  width: 50px;
 `

@@ -1,12 +1,13 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { FaCog } from 'react-icons/fa'
+import { FaCog, FaTrash } from 'react-icons/fa'
 import {
   AddBtn,
   CardPlantao,
   CheckBox,
   Container,
   Content,
+  FilterContainer,
   GridRelatorio,
   Input,
   TextArea,
@@ -49,6 +50,9 @@ const PendingForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
+  const [filterTecnico, setFilterTecnico] = useState('')
+  const [filterDataInicio, setFilterDataInicio] = useState('')
+  const [filterDataFim, setFilterDataFim] = useState('')
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -67,6 +71,31 @@ const PendingForm = () => {
     fetchReports()
   }, [])
 
+  const handleDelete = async (id) => {
+    const { error } = await supabase
+      .from('atendimento')
+      .delete()
+      .match({ id })
+
+    if (error) {
+      console.error('Erro ao excluir o relatório:', error.message)
+    } else {
+      setRelatorios((prevRelatorios) =>
+        prevRelatorios.filter((relatorio) => relatorio.id !== id)
+      )
+      console.log('Relatório excluído com sucesso.')
+    }
+  }
+
+  const applyFilters = () => {
+    return relatorios.filter((relatorio) => {
+      const tecnicoMatch = filterTecnico ? relatorio.tecnico === filterTecnico : true
+      const dataMatch =
+        (filterDataInicio ? new Date(relatorio.created_at) >= new Date(filterDataInicio) : true) &&
+        (filterDataFim ? new Date(relatorio.created_at) <= new Date(filterDataFim) : true)
+      return tecnicoMatch && dataMatch
+    })
+  }
 
   const formatDate = (date) => {
     const options = {
@@ -155,6 +184,8 @@ const PendingForm = () => {
               ? 'R$100,00'
               : 'R$ 80,00'}
       </h2>
+      <h2>Técnico: {state.tecnico}</h2>
+      <p style={{ marginTop: 20 }}>____________________________________________</p>
 
       {state.abrirFormulario && (
         <form onSubmit={handleSubmit}>
@@ -169,7 +200,7 @@ const PendingForm = () => {
                 })
               }
             >
-              <option value="Adriano">Selecione o Técnico de plantão</option>
+              <option value="">Selecione o Técnico de plantão</option>
               <option value="Adriano">Adriano</option>
               <option value="Joao">Joao</option>
               <option value="Marcio">Marcio</option>
@@ -265,34 +296,70 @@ const PendingForm = () => {
         {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto'}
       </AddBtn>
 
+      <FilterContainer style={{ marginBottom: 20 }}>
+              <select
+                value={filterTecnico}
+                onChange={(e) => setFilterTecnico(e.target.value)}
+              >
+                <option value="">Selecione o Técnico</option>
+                <option value="Adriano">Adriano</option>
+                <option value="Joao">Joao</option>
+                <option value="Marcio">Marcio</option>
+                <option value="Yago">Yago</option>
+              </select>
+              <div style={{ display: 'flex', gap: '2rem' , width: '20%' }}>
+                <div>
+              <Input
+                type="date"
+                placeholder="Data Início"
+                value={filterDataInicio}
+                onChange={(e) => setFilterDataInicio(e.target.value)}
+              />
+                </div>
+                <div>
+              <Input
+                type="date"
+                placeholder="Data Fim"
+                value={filterDataFim}
+                onChange={(e) => setFilterDataFim(e.target.value)}
+              />
+                </div>
+              </div>
+      </FilterContainer>
+
       <GridRelatorio className="relatorios-grid">
-        {relatorios.map((relatorio, index) => (
-          <div key={index}>
-            <CardPlantao key={index} className="relatorio-card">
-              <p>
-                <strong>Técnico:</strong> {relatorio.tecnico}
-              </p>
-              <p>
-                <strong>Local:</strong> {relatorio.local}
-              </p>
-              <p>
-                <strong>Responsável:</strong> {relatorio.responsavel}
-              </p>
-              <p>
-                <strong>Hora de Início:</strong> {relatorio.hora_ini}
-              </p>
-              <p>
-                <strong>Hora Final:</strong> {relatorio.hora_fini}
-              </p>
-              {/* <p>
-                  <strong>Descrição:</strong> {relatorio.descricao}
-                </p> */}
-              {relatorio.pendencias && (
+        {applyFilters().map((relatorio, index) => (
+          <div key={index} >
+              <CardPlantao key={index} className="relatorio-card">
+              <div>
                 <p>
-                  <strong>Pendência:</strong> {relatorio.pendencias}
+                  <strong>Técnico:</strong> {relatorio.tecnico}
                 </p>
-              )}
-            </CardPlantao>
+                <p>
+                  <strong>Local:</strong> {relatorio.local}
+                </p>
+                <p>
+                  <strong>Responsável:</strong> {relatorio.responsavel}
+                </p>
+                <p>
+                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
+                </p>
+                <p>
+                  <strong>Hora Final:</strong> {relatorio.horaFinal}
+                </p>
+                {relatorio.pendencia && (
+                  <p>
+                    <strong>Pendência:</strong> {relatorio.pendencia}
+                  </p>
+                )}
+              </div>
+              <div>
+              <FaTrash
+                style={{ cursor: 'pointer', color: 'red' }}
+                onClick={() => handleDelete(relatorio.id)}
+                />
+              </div>
+                </CardPlantao>              
           </div>
         ))}
       </GridRelatorio>
