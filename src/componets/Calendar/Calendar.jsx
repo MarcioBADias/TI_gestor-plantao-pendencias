@@ -10,7 +10,7 @@ import {
 
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-const Calendar = () => {
+const Calendar = ({ onClickedDay }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const year = currentDate.getFullYear();
@@ -31,13 +31,25 @@ const Calendar = () => {
     const days = [];
 
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<Day key={`empty-${i}`} />);
-    }
+      days.push(
+        <Day 
+            key={`empty-${i}`}
+        />
+    )}
 
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(
-        <Day key={day}>
-          {day}
+        <Day 
+            key={day}          
+            onClick={onClickedDay}
+        >
+            {day}
+            <p style={{ marginTop: 10 }}>
+                Técnico de Plantão:
+            </p>
+            <span>
+                <strong>Fulano</strong>
+            </span>
         </Day>
       );
     }
@@ -55,7 +67,11 @@ const Calendar = () => {
 
       <WeekDays>
         {daysOfWeek.map(day => (
-          <span key={day}>{day}</span>
+            <span 
+                key={day}
+            >
+                {day}
+            </span>
         ))}
       </WeekDays>
 

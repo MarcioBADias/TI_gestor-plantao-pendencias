@@ -46,7 +46,7 @@ const reducer = (state, action) => {
   }
 }
 
-const PendingForm = () => {
+const PendingForm = ({ onClickedDay }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
@@ -114,21 +114,6 @@ const PendingForm = () => {
     setEditandoData(false)
   }
 
-  // const enviarPendencias = async () => {
-  //   const pendencias = [ 
-  //     "Servidor fora do ar", 
-  //     "Erro na API de login" 
-  //   ]
-  
-  //   await fetch("https://seu-n8n.com/webhook/pendencias", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ pendencias }),
-  //   })
-  
-  //   alert("Pendências enviadas!");
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newReport = {
@@ -145,14 +130,6 @@ const PendingForm = () => {
     const { data, error } = await supabase
       .from('atendimento')
       .insert([newReport])
-
-    if (state.pendencia) {
-      await fetch("https://meu-n8n.loca.lt/webhook/pendencias", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state.pendencia),
-      })
-    }
 
     if (error) {
       console.error('Erro ao salvar no Supabase:', error.message)
@@ -323,6 +300,10 @@ const PendingForm = () => {
 
       <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })}>
         {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto'}
+      </AddBtn>
+
+      <AddBtn onClick={ onClickedDay }>
+        Voltar para o Calendário
       </AddBtn>
 
       <FilterContainer style={{ marginBottom: 20 }}>

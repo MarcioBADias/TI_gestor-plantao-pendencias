@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Calendar } from './componets/Calendar/Calendar'
 import { PendingForm } from './componets/PendingForm'
 
 const App = () => {
+  const [ formisOpen, setFormIsOpen ] = useState(false)
   return (
     <>
       <img
@@ -9,8 +11,7 @@ const App = () => {
               src="/Logo_noSymbol_BK.png"
               alt="Logo"
             />
-      <PendingForm />
-      <Calendar />
+      { formisOpen ? <Calendar onClickedDay = {() => setFormIsOpen(!formisOpen)} /> : <PendingForm onClickedDay = {() => setFormIsOpen(!formisOpen)} /> }
     </>
   )
 }
