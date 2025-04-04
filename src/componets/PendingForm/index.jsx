@@ -91,8 +91,8 @@ const PendingForm = () => {
     return relatorios.filter((relatorio) => {
       const tecnicoMatch = filterTecnico ? relatorio.tecnico === filterTecnico : true
       const dataMatch =
-        (filterDataInicio ? new Date(relatorio.created_at) >= new Date(filterDataInicio) : true) &&
-        (filterDataFim ? new Date(relatorio.created_at) <= new Date(filterDataFim) : true)
+        (filterDataInicio ? new Date(relatorio.created_at.slice(0,10)) >= new Date(filterDataInicio) : true) &&
+        (filterDataFim ? new Date(relatorio.created_at.slice(0,10)) <= new Date(filterDataFim) : true)
       return tecnicoMatch && dataMatch
     })
   }
