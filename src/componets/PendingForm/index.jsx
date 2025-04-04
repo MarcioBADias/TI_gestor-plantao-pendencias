@@ -146,13 +146,13 @@ const PendingForm = () => {
       .from('atendimento')
       .insert([newReport])
 
-    if (state.pendencia) {
-      await fetch("http://192.168.15.65:3001/webhook-test/pendencias", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state.pendencia),
-      })
-    }
+    // if (state.pendencia) {
+    //   await fetch("http://192.168.15.65:3001/webhook-test/pendencias", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(state.pendencia),
+    //   })
+    // }
 
     if (error) {
       console.error('Erro ao salvar no Supabase:', error.message)
