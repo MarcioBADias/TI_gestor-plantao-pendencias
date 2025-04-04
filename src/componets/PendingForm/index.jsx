@@ -114,6 +114,21 @@ const PendingForm = () => {
     setEditandoData(false)
   }
 
+  // const enviarPendencias = async () => {
+  //   const pendencias = [ 
+  //     "Servidor fora do ar", 
+  //     "Erro na API de login" 
+  //   ]
+  
+  //   await fetch("https://seu-n8n.com/webhook/pendencias", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ pendencias }),
+  //   })
+  
+  //   alert("Pendências enviadas!");
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newReport = {
@@ -130,6 +145,14 @@ const PendingForm = () => {
     const { data, error } = await supabase
       .from('atendimento')
       .insert([newReport])
+
+    if (state.pendencia) {
+      await fetch("http://192.168.15.65:3001/webhook-test/pendencias", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state.pendencia),
+      })
+    }
 
     if (error) {
       console.error('Erro ao salvar no Supabase:', error.message)
@@ -332,6 +355,9 @@ const PendingForm = () => {
           <div key={index} >
               <CardPlantao key={index} className="relatorio-card">
               <div>
+                <p>
+                  <strong>{formatDate(relatorio.created_at.slice(0,10))}</strong>
+                </p>
                 <p>
                   <strong>Técnico:</strong> {relatorio.tecnico}
                 </p>
