@@ -1,0 +1,67 @@
+import React, { useState } from 'react';
+import {
+  CalendarContainer,
+  CalendarHeader,
+  CalendarGrid,
+  Day,
+  WeekDays,
+  NavButton
+} from './style';
+
+const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+const Calendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const prevMonth = () => {
+    setCurrentDate(new Date(year, month - 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(year, month + 1));
+  };
+
+  const generateDays = () => {
+    const days = [];
+
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push(<Day key={`empty-${i}`} />);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(
+        <Day key={day}>
+          {day}
+        </Day>
+      );
+    }
+
+    return days;
+  };
+
+  return (
+    <CalendarContainer>
+      <CalendarHeader>
+        <NavButton onClick={prevMonth}>←</NavButton>
+        <h2>{currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</h2>
+        <NavButton onClick={nextMonth}>→</NavButton>
+      </CalendarHeader>
+
+      <WeekDays>
+        {daysOfWeek.map(day => (
+          <span key={day}>{day}</span>
+        ))}
+      </WeekDays>
+
+      <CalendarGrid>{generateDays()}</CalendarGrid>
+    </CalendarContainer>
+  );
+};
+
+export { Calendar }

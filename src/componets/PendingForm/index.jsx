@@ -146,13 +146,13 @@ const PendingForm = () => {
       .from('atendimento')
       .insert([newReport])
 
-    // if (state.pendencia) {
-    //   await fetch("http://192.168.15.65:3001/webhook-test/pendencias", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(state.pendencia),
-    //   })
-    // }
+    if (state.pendencia) {
+      await fetch("https://meu-n8n.loca.lt/webhook/pendencias", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(state.pendencia),
+      })
+    }
 
     if (error) {
       console.error('Erro ao salvar no Supabase:', error.message)
@@ -167,12 +167,6 @@ const PendingForm = () => {
 
   return (
     <Container>
-      <img
-        style={{ maxWidth: '20vw', marginTop: 50 }}
-        src="/Logo_noSymbol_BK.png"
-        alt="Logo"
-      />
-
       <Title>
         Plantão Referente ao dia: {formatDate(state.data)}
         <FaCog
@@ -231,6 +225,18 @@ const PendingForm = () => {
             </select>
           </Content>
           <Content>
+          <Input
+                type="date"
+                placeholder="Data Início"
+                value={state.data}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'SET_FIELD',
+                    field: 'data',
+                    value: e.target.value,
+                  })
+                }}
+              />
             <Input
               placeholder="Local do Chamado:"
               type="text"

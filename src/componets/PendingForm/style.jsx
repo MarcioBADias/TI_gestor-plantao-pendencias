@@ -5,7 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
-  padding: 0 2rem;
 `
 export const Content = styled.div`
   margin: 1rem 0;
@@ -36,10 +35,9 @@ export const Title = styled.h1`
 export const FilterContainer = styled.div`
   align-items: center;
   background: var(--color-primary);
-  border-radius: 10px;
   display: flex;
-  height: 50px;
-  justify-content: space-between;
+  height: 80px;
+  justify-content: space-around;
   padding: 1rem;
   width: 100%;
 `
