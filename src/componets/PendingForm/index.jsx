@@ -46,13 +46,22 @@ const reducer = (state, action) => {
   }
 }
 
-const PendingForm = ({ onClickedDay }) => {
+const PendingForm = ({ selectedDate, onClose }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
   const [filterTecnico, setFilterTecnico] = useState('')
   const [filterDataInicio, setFilterDataInicio] = useState('')
   const [filterDataFim, setFilterDataFim] = useState('')
+
+  useEffect(() => {
+    console.log(selectedDate)
+    if (selectedDate) {
+      const dataFormatada = new Date(selectedDate).toISOString().split('T')[0]
+      dispatch({ type: 'SET_FIELD', field: 'data', value: dataFormatada })
+    }
+  }, [selectedDate])
+  
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -104,8 +113,8 @@ const PendingForm = ({ onClickedDay }) => {
       month: 'long',
       year: 'numeric',
     }
-    const localDate = new Date(date + 'T00:00:00')
 
+    const localDate = new Date(date + 'T00:00:00')
     return localDate.toLocaleDateString('pt-BR', options)
   }
 
@@ -168,6 +177,7 @@ const PendingForm = ({ onClickedDay }) => {
           <button onClick={handleSaveData}>Salvar</button>
         </div>
       )}
+
       <h2>
         Valor do plantão:
         {formatDate(state.data).includes('domingo')
@@ -298,11 +308,11 @@ const PendingForm = ({ onClickedDay }) => {
         </form>
       )}
 
-      <AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })}>
-        {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimenbto'}
+<AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })}>
+        {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimento'}
       </AddBtn>
 
-      <AddBtn onClick={ onClickedDay }>
+      <AddBtn onClick={onClose}>
         Voltar para o Calendário
       </AddBtn>
 
