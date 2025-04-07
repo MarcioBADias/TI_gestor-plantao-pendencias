@@ -50,7 +50,6 @@ const PendingForm = ({ selectedDate, onClose }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
-  const [filterTecnico, setFilterTecnico] = useState('')
   const [filterDataInicio, setFilterDataInicio] = useState('')
   const [filterDataFim, setFilterDataFim] = useState('')
 
@@ -98,11 +97,8 @@ const PendingForm = ({ selectedDate, onClose }) => {
 
   const applyFilters = () => {
     return relatorios.filter((relatorio) => {
-      const tecnicoMatch = filterTecnico ? relatorio.tecnico === filterTecnico : true
       const dataMatch =
-        (filterDataInicio ? new Date(relatorio.created_at.slice(0,10)) >= new Date(filterDataInicio) : true) &&
-        (filterDataFim ? new Date(relatorio.created_at.slice(0,10)) <= new Date(filterDataFim) : true)
-      return tecnicoMatch && dataMatch
+        (state.data ? relatorio.created_at.slice(0,10) === state.data : true)
     })
   }
 
@@ -312,37 +308,6 @@ const PendingForm = ({ selectedDate, onClose }) => {
         <FaRegPlusSquare style={{ width: 40, height: 40 }} onClick={() => dispatch({ type: 'SET_OPENFORM' })} />
         <FaRegCheckCircle style={{ width: 40, height: 40 }} />
       </div>
-
-      <FilterContainer style={{ marginBottom: 20 }}>
-              <select
-                value={filterTecnico}
-                onChange={(e) => setFilterTecnico(e.target.value)}
-              >
-                <option value="">Selecione o Técnico</option>
-                <option value="Adriano">Adriano</option>
-                <option value="Joao">Joao</option>
-                <option value="Marcio">Marcio</option>
-                <option value="Yago">Yago</option>
-              </select>
-              <div style={{ display: 'flex', gap: '2rem' , width: '20%' }}>
-                <div>
-              <Input
-                type="date"
-                placeholder="Data Início"
-                value={filterDataInicio}
-                onChange={(e) => setFilterDataInicio(e.target.value)}
-              />
-                </div>
-                <div>
-              <Input
-                type="date"
-                placeholder="Data Fim"
-                value={filterDataFim}
-                onChange={(e) => setFilterDataFim(e.target.value)}
-              />
-                </div>
-              </div>
-      </FilterContainer>
 
       <GridRelatorio className="relatorios-grid">
         {applyFilters().map((relatorio, index) => (
