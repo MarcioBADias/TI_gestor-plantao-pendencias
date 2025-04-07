@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { FaCog, FaTrash } from 'react-icons/fa'
+import { FaCog, FaTrash, FaRegArrowAltCircleLeft, FaRegPlusSquare, FaRegCheckCircle } from 'react-icons/fa'
 import {
   AddBtn,
   CardPlantao,
@@ -307,14 +307,11 @@ const PendingForm = ({ selectedDate, onClose }) => {
           <button type="submit">Salvar Relatório</button>
         </form>
       )}
-
-<AddBtn onClick={() => dispatch({ type: 'SET_OPENFORM' })}>
-        {state.abrirFormulario ? 'Fechar campo' : 'Adicionar Atendimento'}
-      </AddBtn>
-
-      <AddBtn onClick={onClose}>
-        Voltar para o Calendário
-      </AddBtn>
+      <div style={{ display: 'flex', gap: 10, margin: 20 }}>
+        <FaRegArrowAltCircleLeft style={{ width: 40, height: 40 }} onClick={onClose} />
+        <FaRegPlusSquare style={{ width: 40, height: 40 }} onClick={() => dispatch({ type: 'SET_OPENFORM' })} />
+        <FaRegCheckCircle style={{ width: 40, height: 40 }} />
+      </div>
 
       <FilterContainer style={{ marginBottom: 20 }}>
               <select
