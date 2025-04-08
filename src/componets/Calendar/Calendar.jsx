@@ -42,13 +42,11 @@ const Calendar = ({ onClickedDay }) => {
       }
 
       setTechnicians(data)
-      console.log('Usuários retornados:', data)
     }
 
     fetchTechnicians()
   }, [])
 
-  // 🔁 Agora fora do useEffect para ser reutilizável
   const fetchPlantaoData = async () => {
     const startOfMonth = new Date(year, month, 1).toISOString().split('T')[0]
     const endOfMonth = new Date(year, month + 1, 0).toISOString().split('T')[0]
@@ -72,7 +70,6 @@ const Calendar = ({ onClickedDay }) => {
     setTechPerDay(formatted)
   }
 
-  // 🔄 Chamando ao montar e mudar de mês
   useEffect(() => {
     fetchPlantaoData()
   }, [currentDate])
@@ -87,7 +84,7 @@ const Calendar = ({ onClickedDay }) => {
       return
     }
 
-    await fetchPlantaoData() // Atualiza os dados após salvar
+    await fetchPlantaoData()
     setEditingDate(null)
   }
 
@@ -104,6 +101,9 @@ const Calendar = ({ onClickedDay }) => {
       const currentTechId = techPerDay[dateKey]
       const currentTech = technicians.find(tech => tech.id === currentTechId)?.display_name || 'Fulano'
       const isEditing = editingDate === dateKey
+      const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
+      console.log(passedDate)
+      console.log(new Date(currentDate.toDateString()))
 
       days.push(
         <Day key={dateKey} onClick={() => onClickedDay(selectedFullDate)}>
@@ -123,13 +123,13 @@ const Calendar = ({ onClickedDay }) => {
           ) : (
             <>
               <span><strong>{currentTech}</strong></span>
-              <FiEdit3
+              { passedDate && <FiEdit3
                 style={{ cursor: 'pointer', marginLeft: 8 }}
                 onClick={(e) => {
                   e.stopPropagation()
                   setEditingDate(dateKey)
                 }}
-              />
+              />}
             </>
           )}
         </Day>
