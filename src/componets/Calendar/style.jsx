@@ -50,6 +50,7 @@ export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
+
 `;
 
 export const Day = styled.div`
@@ -59,8 +60,20 @@ export const Day = styled.div`
   background-color: #f3f3f3;
   height: 100px;
   cursor: pointer;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+
+  @media (max-width: 700px) {
+    height: 80px;
+    overflow: hidden;
+    font-size: 0.45rem;
+  }
 
   &:hover {
     background-color: #dceeff;
   }
+
+  p, span, select {
+    font-size: inherit;
+  }
 `;
+

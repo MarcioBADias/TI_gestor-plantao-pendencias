@@ -99,11 +99,9 @@ const Calendar = ({ onClickedDay }) => {
       const selectedFullDate = new Date(year, month, day)
       const dateKey = selectedFullDate.toISOString().split('T')[0]
       const currentTechId = techPerDay[dateKey]
-      const currentTech = technicians.find(tech => tech.id === currentTechId)?.display_name || 'Fulano'
+      const currentTech = technicians.find(tech => tech.id === currentTechId)?.display_name || 'Selecione um técnico'
       const isEditing = editingDate === dateKey
       const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
-      console.log(passedDate)
-      console.log(new Date(currentDate.toDateString()))
 
       days.push(
         <Day key={dateKey} onClick={() => onClickedDay(selectedFullDate)}>
