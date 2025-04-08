@@ -97,10 +97,12 @@ const PendingForm = ({ selectedDate, onClose }) => {
 
   const applyFilters = () => {
     return relatorios.filter((relatorio) => {
-      const dataMatch =
-        (state.data ? relatorio.created_at.slice(0,10) === state.data : true)
+      const createdDate = new Date(relatorio.created_at).toISOString().split('T')[0]
+      const selectedDate = new Date(state.data).toISOString().split('T')[0]
+      return createdDate === selectedDate
     })
   }
+  
 
   const formatDate = (date) => {
     const options = {
