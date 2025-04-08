@@ -192,18 +192,6 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       {state.abrirFormulario && (
         <form onSubmit={handleSubmit}>
           <Content>
-          <Input
-                type="date"
-                placeholder="Data Início"
-                value={state.data}
-                onChange={(e) => {
-                  dispatch({
-                    type: 'SET_FIELD',
-                    field: 'data',
-                    value: e.target.value,
-                  })
-                }}
-              />
             <Input
               placeholder="Local do Chamado:"
               type="text"
