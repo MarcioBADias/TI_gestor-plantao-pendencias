@@ -104,7 +104,7 @@ const Calendar = ({ onClickedDay }) => {
       const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
 
       days.push(
-        <Day key={dateKey} onClick={() => onClickedDay(selectedFullDate)}>
+        <Day key={dateKey} onClick={() => onClickedDay({ currentDate: selectedFullDate, technician: currentTech })}>
           {day}
           <p style={{ marginTop: 10 }}>Técnico de Plantão:</p>
           {isEditing ? (

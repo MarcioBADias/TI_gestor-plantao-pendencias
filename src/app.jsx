@@ -4,10 +4,12 @@ import { PendingForm } from './componets/PendingForm'
 
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(null)
+  const [selectTech, setSelectTech] = useState(null)
   const [formIsOpen, setFormIsOpen] = useState(false)
 
-  const handleClick = (day) => {
-    setSelectedDay(day)
+  const handleClick = (iten) => {
+    setSelectedDay(iten.currentDate)
+    setSelectTech(iten.technician)
     setFormIsOpen(true)
   }
 
@@ -25,7 +27,7 @@ const App = () => {
       />
 
       {formIsOpen && selectedDay ? (
-        <PendingForm selectedDate={selectedDay} onClose={handleCloseForm} />
+        <PendingForm selectedDate={selectedDay} selectTech={selectTech} onClose={handleCloseForm} />
       ) : (
         <Calendar onClickedDay={handleClick} />
       )}

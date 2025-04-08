@@ -46,7 +46,7 @@ const reducer = (state, action) => {
   }
 }
 
-const PendingForm = ({ selectedDate, onClose }) => {
+const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
@@ -186,29 +186,11 @@ const PendingForm = ({ selectedDate, onClose }) => {
               ? 'R$100,00'
               : 'R$ 80,00'}
       </h2>
-      <h2>Técnico: {state.tecnico}</h2>
+      <h2>Técnico: {selectTech}</h2>
       <p style={{ marginTop: 20 }}>____________________________________________</p>
 
       {state.abrirFormulario && (
         <form onSubmit={handleSubmit}>
-          <Content>
-            <select
-              value={state.tecnico}
-              onChange={(e) =>
-                dispatch({
-                  type: 'SET_FIELD',
-                  field: 'tecnico',
-                  value: e.target.value,
-                })
-              }
-            >
-              <option value="">Selecione o Técnico de plantão</option>
-              <option value="Adriano">Adriano</option>
-              <option value="Joao">Joao</option>
-              <option value="Marcio">Marcio</option>
-              <option value="Yago">Yago</option>
-            </select>
-          </Content>
           <Content>
           <Input
                 type="date"
