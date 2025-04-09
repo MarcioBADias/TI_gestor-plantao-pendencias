@@ -18,6 +18,7 @@ import {
   TextArea,
   Title,
 } from './style'
+import { Spin } from '../Spin'
 
 const supabaseUrl = 'https://uhxambgdjkmdgoarezto.supabase.co'
 const supabaseKey =
@@ -58,6 +59,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
   const [editandoData, setEditandoData] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [filterDataInicio, setFilterDataInicio] = useState('')
   const [filterDataFim, setFilterDataFim] = useState('')
 
@@ -136,23 +138,24 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     setEditandoData(false)
   }
 
-  const enviarMensagem = async () => {
+  const sendMessageOnWhatsapp = async () => {
+    setLoading(true)
     try {
       const response = await fetch("https://evolutionapi-aqcm.onrender.com/message/sendText/Plantao", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": "7e7eb5k6s1duc1cycnetw" // Coloque sua chave diretamente ou use variáveis de ambiente
+          "apikey": "7e7eb5k6s1duc1cycnetw"
         },
         body: JSON.stringify({
-          number: "120363025885372734@g.us", // Coloque o número completo com DDI, DDD e @c.us no final
+          number: "120363025885372734@g.us",
           options: {
             delay: 1200,
             presence: "composing",
             linkPreview: false
           },
           textMessage: {
-            text: `Plantão de: ${state.tecnico}\nLocal: ${state.local}\nPENDÊNCIA: *${state.pendencia}*`
+            text: `⚠ Plantão de: ${state.tecnico}\nLocal: ${state.local}\nPENDÊNCIA: *${state.pendencia}*`
           }
           
         })
@@ -162,6 +165,8 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       console.log("Resposta da API:", data);
     } catch (error) {
       console.error("Erro ao enviar mensagem:", error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -189,9 +194,9 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     } else {
       console.log('Salvo com sucesso:', data)
       setRelatorios([...relatorios, newReport])
-      if (state.gerouPendencia && state.pendencia.trim() !== '') {
-        await enviarMensagem()
-      }
+      // if (state.gerouPendencia && state.pendencia.trim() !== '') {
+      //   await enviarMensagem()
+      // }
       dispatch({ type: 'RESET' })
     }
   }
@@ -218,7 +223,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
                 value: e.target.value,
               })
             }
-          />
+          />      
           <button onClick={handleSaveData}>Salvar</button>
         </div>
       )}
@@ -237,6 +242,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       <p style={{ marginTop: 20 }}>____________________________________________</p>
 
       {state.abrirFormulario && (
+        loading ? <Spin /> :
         <form onSubmit={handleSubmit}>
           <Content>
           <label>Data do chamado</label>
