@@ -147,11 +147,11 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const sendMessageOnWhatsapp = async () => {
     dispatch({ type: 'SET_LOADING', value: true })
     try {
-      const response = await fetch("https://evolutionapi-aqcm.onrender.com/message/sendText/Plantao", {
+      const response = await fetch("http://192.168.15.65:8080/message/sendText/Plantao", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": "7e7eb5k6s1duc1cycnetw"
+          "apikey": "lo593kofj2akb2m9vxl9w"
         },
         body: JSON.stringify({
           number: "120363025885372734@g.us",
@@ -200,9 +200,9 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     } else {
       console.log('Salvo com sucesso:', data)
       setRelatorios([...relatorios, newReport])
-      // if (state.gerouPendencia && state.pendencia.trim() !== '') {
-      //   await enviarMensagem()
-      // }
+      if (state.gerouPendencia && state.pendencia.trim() !== '') {
+        await sendMessageOnWhatsapp()
+      }
       dispatch({ type: 'RESET' })
     }
   }
