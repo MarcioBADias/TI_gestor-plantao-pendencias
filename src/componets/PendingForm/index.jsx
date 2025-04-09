@@ -136,6 +136,36 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     setEditandoData(false)
   }
 
+  const enviarMensagem = async () => {
+    try {
+      const response = await fetch("https://evolutionapi-aqcm.onrender.com/message/sendText/Plantao", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "7e7eb5k6s1duc1cycnetw" // Coloque sua chave diretamente ou use variáveis de ambiente
+        },
+        body: JSON.stringify({
+          number: "120363025885372734@g.us", // Coloque o número completo com DDI, DDD e @c.us no final
+          options: {
+            delay: 1200,
+            presence: "composing",
+            linkPreview: false
+          },
+          textMessage: {
+            text: `Plantão de: ${state.tecnico}\nLocal: ${state.local}\nPENDÊNCIA: *${state.pendencia}*`
+          }
+          
+        })
+      });
+  
+      const data = await response.json();
+      console.log("Resposta da API:", data);
+    } catch (error) {
+      console.error("Erro ao enviar mensagem:", error);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const newReport = {
@@ -159,6 +189,9 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     } else {
       console.log('Salvo com sucesso:', data)
       setRelatorios([...relatorios, newReport])
+      if (state.gerouPendencia && state.pendencia.trim() !== '') {
+        await enviarMensagem()
+      }
       dispatch({ type: 'RESET' })
     }
   }
