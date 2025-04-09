@@ -172,7 +172,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     } catch (error) {
       console.error("Erro ao enviar mensagem:", error);
     } finally {
-      setLoading(false)
+      dispatch({ type: 'SET_LOADING', value: false })
     }
   };
 
