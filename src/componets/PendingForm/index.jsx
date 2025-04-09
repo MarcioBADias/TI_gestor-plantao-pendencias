@@ -1,13 +1,18 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import { FaCog, FaTrash, FaRegArrowAltCircleLeft, FaRegPlusSquare, FaRegCheckCircle } from 'react-icons/fa'
+import { 
+  FaCog, 
+  FaTrash, 
+  FaRegArrowAltCircleLeft, 
+  FaRegPlusSquare, 
+  FaRegCheckCircle,
+  FaRegMinusSquare,
+} from 'react-icons/fa'
 import {
-  AddBtn,
   CardPlantao,
   CheckBox,
   Container,
   Content,
-  FilterContainer,
   GridRelatorio,
   Input,
   TextArea,
@@ -37,8 +42,11 @@ const reducer = (state, action) => {
       return { ...state, [action.field]: action.value }
     case 'TOGGLE_PENDENCIA':
       return { ...state, gerouPendencia: !state.gerouPendencia, pendencia: '' }
-    case 'RESET':
-      return initialState
+      case 'RESET':
+        return {
+          ...initialState,
+          data: state.data,
+        }      
     case 'SET_OPENFORM':
       return { ...state, abrirFormulario: !state.abrirFormulario }
     default:
@@ -54,14 +62,18 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const [filterDataFim, setFilterDataFim] = useState('')
 
   useEffect(() => {
-    console.log(selectedDate)
     if (selectedDate) {
       const dataFormatada = new Date(selectedDate).toISOString().split('T')[0]
       dispatch({ type: 'SET_FIELD', field: 'data', value: dataFormatada })
     }
   }, [selectedDate])
-  
 
+  useEffect(() => {
+    if (selectTech) {
+      dispatch({ type: 'SET_FIELD', field: 'tecnico', value: selectTech })
+    }
+  }, [selectTech])
+  
   useEffect(() => {
     const fetchReports = async () => {
       const { data, error } = await supabase
@@ -97,11 +109,14 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
 
   const applyFilters = () => {
     return relatorios.filter((relatorio) => {
-      const createdDate = new Date(relatorio.created_at).toISOString().split('T')[0]
-      const selectedDate = new Date(state.data).toISOString().split('T')[0]
-      return createdDate === selectedDate
+      const createdDate = relatorio.data_atendimento
+      const inicioOk = !filterDataInicio || createdDate >= filterDataInicio
+      const fimOk = !filterDataFim || createdDate <= filterDataFim
+      const matchData = createdDate === new Date(state.data).toISOString().split('T')[0]
+      return inicioOk && fimOk && matchData
     })
   }
+  
   
 
   const formatDate = (date) => {
@@ -125,13 +140,14 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     e.preventDefault()
     const newReport = {
       tecnico: state.tecnico,
+      data_atendimento: state.data,
       created_at: new Date().toLocaleString('sv-SE', {
         timeZone: 'America/Sao_Paulo',
       }),
       local: state.local,
       responsavel: state.responsavel,
       hora_ini: state.horaInicio,
-      hora_fini: state.horaFinal,
+      hora_fini: state.horaFinal,  
       pendencias: state.gerouPendencia ? state.pendencia : '',
     }
     const { data, error } = await supabase
@@ -145,8 +161,6 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       setRelatorios([...relatorios, newReport])
       dispatch({ type: 'RESET' })
     }
-    setRelatorios([...relatorios, state])
-    dispatch({ type: 'RESET' })
   }
 
   return (
@@ -192,6 +206,22 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       {state.abrirFormulario && (
         <form onSubmit={handleSubmit}>
           <Content>
+          <label>Data do chamado</label>
+          <Input
+                type="date"
+                placeholder="Data Início"
+                value={state.data}
+                onChange={(e) => {
+                  dispatch({
+                    type: 'SET_FIELD',
+                    field: 'data',
+                    value: e.target.value,
+                  })
+                }}
+              />
+          </Content>
+          <Content>
+          <label>Local do chamado</label>
             <Input
               placeholder="Local do Chamado:"
               type="text"
@@ -206,6 +236,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
             />
           </Content>
           <Content>
+          <label>Contato do chamado</label>
             <Input
               placeholder="Responsável do Contato:"
               type="text"
@@ -220,6 +251,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
             />
           </Content>
           <Content>
+          <label>Hora de início</label>
             <Input
               placeholder="Hora de Início:"
               type="time"
@@ -234,6 +266,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
             />
           </Content>
           <Content>
+          <label>Hora final</label>
             <Input
               placeholder="Hora Final:"
               type="time"
@@ -277,7 +310,11 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       )}
       <div style={{ display: 'flex', gap: 10, margin: 20 }}>
         <FaRegArrowAltCircleLeft style={{ width: 40, height: 40 }} onClick={onClose} />
-        <FaRegPlusSquare style={{ width: 40, height: 40 }} onClick={() => dispatch({ type: 'SET_OPENFORM' })} />
+        {
+          state.abrirFormulario ?
+          <FaRegMinusSquare style={{ width: 40, height: 40, cursor: 'pointer' }} onClick={() => dispatch({ type: 'SET_OPENFORM' })} />:
+          <FaRegPlusSquare style={{ width: 40, height: 40, cursor: 'pointer' }} onClick={() => dispatch({ type: 'SET_OPENFORM' })} />
+        }
         <FaRegCheckCircle style={{ width: 40, height: 40 }} />
       </div>
 
@@ -287,7 +324,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
               <CardPlantao key={index} className="relatorio-card">
               <div>
                 <p>
-                  <strong>{formatDate(relatorio.created_at.slice(0,10))}</strong>
+                  <strong>{formatDate(relatorio.data_atendimento.slice(0,10))}</strong>
                 </p>
                 <p>
                   <strong>Técnico:</strong> {relatorio.tecnico}
