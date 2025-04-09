@@ -35,7 +35,12 @@ const initialState = {
   gerouPendencia: false,
   pendencia: '',
   abrirFormulario: false,
+  editandoData: false,
+  loading: false,
+  filterDataInicio: '',
+  filterDataFim: '',
 }
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,25 +48,26 @@ const reducer = (state, action) => {
       return { ...state, [action.field]: action.value }
     case 'TOGGLE_PENDENCIA':
       return { ...state, gerouPendencia: !state.gerouPendencia, pendencia: '' }
-      case 'RESET':
-        return {
-          ...initialState,
-          data: state.data,
-        }      
+    case 'RESET':
+      return {
+        ...initialState,
+        data: state.data,
+      }
     case 'SET_OPENFORM':
       return { ...state, abrirFormulario: !state.abrirFormulario }
+    case 'TOGGLE_EDIT_DATE':
+      return { ...state, editandoData: !state.editandoData }
+    case 'SET_LOADING':
+      return { ...state, loading: action.value }
     default:
       return state
   }
 }
 
+
 const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [relatorios, setRelatorios] = useState([])
-  const [editandoData, setEditandoData] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [filterDataInicio, setFilterDataInicio] = useState('')
-  const [filterDataFim, setFilterDataFim] = useState('')
 
   useEffect(() => {
     if (selectedDate) {
@@ -112,8 +118,8 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
   const applyFilters = () => {
     return relatorios.filter((relatorio) => {
       const createdDate = relatorio.data_atendimento
-      const inicioOk = !filterDataInicio || createdDate >= filterDataInicio
-      const fimOk = !filterDataFim || createdDate <= filterDataFim
+      const inicioOk = !state.filterDataInicio || createdDate >= state.filterDataInicio
+      const fimOk = !state.filterDataFim || createdDate <= state.filterDataFim
       const matchData = createdDate === new Date(state.data).toISOString().split('T')[0]
       return inicioOk && fimOk && matchData
     })
@@ -135,11 +141,11 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
 
   const handleSaveData = () => {
     dispatch({ type: 'SET_FIELD', field: 'data', value: state.data })
-    setEditandoData(false)
+    dispatch({ type: 'SET_FIELD', field: 'editandoData', value: state.editandoData })
   }
 
   const sendMessageOnWhatsapp = async () => {
-    setLoading(true)
+    dispatch({ type: 'SET_LOADING', value: true })
     try {
       const response = await fetch("https://evolutionapi-aqcm.onrender.com/message/sendText/Plantao", {
         method: "POST",
@@ -207,11 +213,12 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
         Plantão Referente ao dia: {formatDate(state.data)}
         <FaCog
           style={{ marginLeft: 10, cursor: 'pointer' }}
-          onClick={() => setEditandoData(true)}
+          onClick={() => dispatch({ type: 'TOGGLE_EDIT_DATE' })
+        }
         />
       </Title>
 
-      {editandoData && (
+      {state.editandoData && (
         <div>
           <Input
             type="date"
@@ -242,7 +249,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       <p style={{ marginTop: 20 }}>____________________________________________</p>
 
       {state.abrirFormulario && (
-        loading ? <Spin /> :
+        state.loading ? <Spin /> :
         <form onSubmit={handleSubmit}>
           <Content>
           <label>Data do chamado</label>
