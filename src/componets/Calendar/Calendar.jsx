@@ -54,7 +54,7 @@ const Calendar = ({ onClickedDay }) => {
 
     const { data, error } = await supabase
       .from('plantoes')
-      .select('id, data, id_tecnico')
+      .select('id, data, id_tecnico, checked')
       .gte('data', startOfMonth)
       .lte('data', endOfMonth)
 
@@ -65,7 +65,10 @@ const Calendar = ({ onClickedDay }) => {
 
     const formatted = {}
     data.forEach(item => {
-      formatted[item.data] = item.id_tecnico
+      formatted[item.data] = { 
+        id_tech: item.id_tecnico,
+        checked: item.checked
+      }
     })
 
     setTechPerDay(formatted)
@@ -99,10 +102,13 @@ const Calendar = ({ onClickedDay }) => {
     for (let day = 1; day <= daysInMonth; day++) {
       const selectedFullDate = new Date(year, month, day)
       const dateKey = selectedFullDate.toISOString().split('T')[0]
-      const currentTechId = techPerDay[dateKey]
-      const currentTech = technicians.find(tech => tech.id === currentTechId)?.display_name || 'Selecione um técnico'
+      const dayData = techPerDay[dateKey] || {}
+      const currentTechId = techPerDay[dateKey]?.id_tech
+      const currentTech = technicians.find(tech => tech.id === dayData.id_tech)?.display_name || 'Selecione um técnico'
       const isEditing = editingDate === dateKey
       const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
+      const isChecked = dayData.checked === true
+
 
       days.push(
         <Day key={dateKey} isActive={checkedField} onClick={() => onClickedDay({ currentDate: selectedFullDate, technician: currentTech })}>
@@ -133,14 +139,28 @@ const Calendar = ({ onClickedDay }) => {
 
               <FiCheckSquare
                 style={{
-                  color: checkedField.includes(dateKey) ? 'green' : 'gray',
-                  cursor: checkedField.includes(dateKey) ? 'default' : 'pointer'
+                  color: isChecked ? 'green' : 'gray',
+                  cursor: isChecked ? 'default' : 'pointer'
                 }}
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation()
-                  if (!checkedField.includes(dateKey)) {
-                    setCheckedField(prev => [... prev, dateKey])
+              
+                  const { error } = await supabase
+                    .from('plantoes')
+                    .upsert([{
+                      data: dateKey,
+                      id_tecnico: currentTechId || null,
+                      checked: !isChecked
+                    }], {
+                      onConflict: ['data']
+                    })
+              
+                  if (error) {
+                    console.error('Erro ao atualizar checked:', error.message)
+                    return
                   }
+              
+                  await fetchPlantaoData()
                 }}
               />
               </p>
