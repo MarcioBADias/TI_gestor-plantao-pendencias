@@ -54,6 +54,8 @@ export const CalendarGrid = styled.div`
 `;
 
 export const Day = styled.div`
+  background-color: ${({ isActive }) => isActive ? '#e0f7fa' : '#fff'};
+  color: ${({ hasTech }) => hasTech ? '#00695c' : '#000'};
   text-align: center;
   padding: 10px 0;
   border-radius: 8px;

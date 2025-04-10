@@ -382,14 +382,14 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
                   <strong>Responsável:</strong> {relatorio.responsavel}
                 </p>
                 <p>
-                  <strong>Hora de Início:</strong> {relatorio.horaInicio}
+                  <strong>Hora de Início:</strong> {relatorio.hora_ini}
                 </p>
                 <p>
-                  <strong>Hora Final:</strong> {relatorio.horaFinal}
+                  <strong>Hora Final:</strong> {relatorio.hora_fini}
                 </p>
-                {relatorio.pendencia && (
+                {relatorio.pendencias && (
                   <p>
-                    <strong>Pendência:</strong> {relatorio.pendencia}
+                    <strong>Pendência:</strong> {relatorio.pendencias}
                   </p>
                 )}
               </div>

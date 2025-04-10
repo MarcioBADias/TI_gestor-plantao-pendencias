@@ -7,7 +7,7 @@ import {
   WeekDays,
   NavButton
 } from './style'
-import { FiEdit3 } from 'react-icons/fi'
+import { FiEdit3, FiCheckSquare } from 'react-icons/fi'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://uhxambgdjkmdgoarezto.supabase.co'
@@ -21,6 +21,7 @@ const Calendar = ({ onClickedDay }) => {
   const [techPerDay, setTechPerDay] = useState({})
   const [editingDate, setEditingDate] = useState(null)
   const [technicians, setTechnicians] = useState([])
+  const [checkedField, setCheckedField] = useState([])
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
@@ -104,7 +105,7 @@ const Calendar = ({ onClickedDay }) => {
       const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
 
       days.push(
-        <Day key={dateKey} onClick={() => onClickedDay({ currentDate: selectedFullDate, technician: currentTech })}>
+        <Day key={dateKey} isActive={checkedField} onClick={() => onClickedDay({ currentDate: selectedFullDate, technician: currentTech })}>
           {day}
           <p style={{ marginTop: 10 }}>Técnico de Plantão:</p>
           {isEditing ? (
@@ -128,6 +129,22 @@ const Calendar = ({ onClickedDay }) => {
                   setEditingDate(dateKey)
                 }}
               />}
+              <p>
+
+              <FiCheckSquare
+                style={{
+                  color: checkedField.includes(dateKey) ? 'green' : 'gray',
+                  cursor: checkedField.includes(dateKey) ? 'default' : 'pointer'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (!checkedField.includes(dateKey)) {
+                    setCheckedField(prev => [... prev, dateKey])
+                  }
+                }}
+              />
+              </p>
+
             </>
           )}
         </Day>
