@@ -42,7 +42,7 @@ const initialState = {
   }
 
   const usePendingFormState = () => {
-    const [state, dispatch] = useReducer
+    const [state, dispatch] = useReducer(reducer, initialState)
     return { state, dispatch }
   }
 

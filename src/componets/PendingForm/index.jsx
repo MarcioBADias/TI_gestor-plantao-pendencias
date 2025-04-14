@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import React, { useEffect } from 'react'
 import { 
   FaCog, 
   FaTrash, 
@@ -19,55 +18,13 @@ import {
   Title,
 } from './style'
 import { Spin } from '../Spin'
-
-const supabaseUrl = 'https://uhxambgdjkmdgoarezto.supabase.co'
-const supabaseKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeGFtYmdkamttZGdvYXJlenRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjM2OTksImV4cCI6MjA1OTE5OTY5OX0.eWbosa73xQPofo4_nantz5gKlLPRFuiYBRcIu0fZTMg'
-const supabase = createClient(supabaseUrl, supabaseKey)
-
-const initialState = {
-  tecnico: 'Marcio',
-  data: new Date().toLocaleString('pt-BR'),
-  local: '',
-  responsavel: '',
-  horaInicio: '',
-  horaFinal: '',
-  gerouPendencia: false,
-  pendencia: '',
-  abrirFormulario: false,
-  editandoData: false,
-  loading: false,
-  filterDataInicio: '',
-  filterDataFim: '',
-}
-
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_FIELD':
-      return { ...state, [action.field]: action.value }
-    case 'TOGGLE_PENDENCIA':
-      return { ...state, gerouPendencia: !state.gerouPendencia, pendencia: '' }
-    case 'RESET':
-      return {
-        ...initialState,
-        data: state.data,
-      }
-    case 'SET_OPENFORM':
-      return { ...state, abrirFormulario: !state.abrirFormulario }
-    case 'TOGGLE_EDIT_DATE':
-      return { ...state, editandoData: !state.editandoData }
-    case 'SET_LOADING':
-      return { ...state, loading: action.value }
-    default:
-      return state
-  }
-}
+import { usePendingFormState } from '../../hooks/usePendingFormState'
+import { useSupabaseReports } from '../../hooks/useSupabaseReports'
 
 
 const PendingForm = ({ selectTech, selectedDate, onClose }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const [relatorios, setRelatorios] = useState([])
+  const { state, dispatch } = usePendingFormState()
+  const { relatorios, deleteReport, addReport } = useSupabaseReports()
 
   useEffect(() => {
     if (selectedDate) {
@@ -81,40 +38,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       dispatch({ type: 'SET_FIELD', field: 'tecnico', value: selectTech })
     }
   }, [selectTech])
-  
-  useEffect(() => {
-    const fetchReports = async () => {
-      const { data, error } = await supabase
-        .from('atendimento')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Erro ao buscar atendimentos:', error.message)
-      } else {
-        setRelatorios(data)
-      }
-    }
-
-    fetchReports()
-  }, [])
-
-  const handleDelete = async (id) => {
-    const { error } = await supabase
-      .from('atendimento')
-      .delete()
-      .match({ id })
-
-    if (error) {
-      console.error('Erro ao excluir o relatório:', error.message)
-    } else {
-      setRelatorios((prevRelatorios) =>
-        prevRelatorios.filter((relatorio) => relatorio.id !== id)
-      )
-      console.log('Relatório excluído com sucesso.')
-    }
-  }
-
+ 
   const applyFilters = () => {
     return relatorios.filter((relatorio) => {
       const createdDate = relatorio.data_atendimento
@@ -191,20 +115,11 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       hora_fini: state.horaFinal,  
       pendencias: state.gerouPendencia ? state.pendencia : '',
     }
-    const { data, error } = await supabase
-      .from('atendimento')
-      .insert([newReport])
-
-    if (error) {
-      console.error('Erro ao salvar no Supabase:', error.message)
-    } else {
-      console.log('Salvo com sucesso:', data)
-      setRelatorios([...relatorios, newReport])
-      if (state.gerouPendencia && state.pendencia.trim() !== '') {
-        await sendMessageOnWhatsapp()
-      }
-      dispatch({ type: 'RESET' })
+    addReport(newReport)
+    if (state.gerouPendencia && state.pendencia.trim() !== '') {
+      await sendMessageOnWhatsapp()
     }
+    dispatch({ type: 'RESET' })
   }
 
   return (
@@ -396,7 +311,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
               <div>
               <FaTrash
                 style={{ cursor: 'pointer', color: 'red' }}
-                onClick={() => handleDelete(relatorio.id)}
+                onClick={() => deleteReport(relatorio.id)}
                 />
               </div>
                 </CardPlantao>              
