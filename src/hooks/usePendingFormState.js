@@ -17,25 +17,28 @@ const initialState = {
   }
 
   const reducer = (state, action) => {
-    switch (action.type) {
-      case 'SET_FIELD':
-        return { ...state, [action.field]: action.value }
-      case 'TOGGLE_PENDENCIA':
-        return { ...state, gerouPendencia: !state.gerouPendencia, pendencia: '' }
-      case 'RESET':
-        return {
-          ...initialState,
-          data: state.data,
-        }
-      case 'SET_OPENFORM':
-        return { ...state, abrirFormulario: !state.abrirFormulario }
-      case 'TOGGLE_EDIT_DATE':
-        return { ...state, editandoData: !state.editandoData }
-      case 'SET_LOADING':
-        return { ...state, loading: action.value }
-      default:
-        return state
+    if (action.type === 'SET_FIELD') {
+      return { ...state, [action.field]: action.value }
     }
+    if (action.type === 'TOGGLE_PENDENCIA') {
+      return { ...state, gerouPendencia: !state.gerouPendencia, pendencia: '' }
+    }
+    if (action.type === 'RESET') {
+      return {
+        ...initialState,
+        data: state.data,
+      }
+    }
+    if (action.type === 'SET_OPENFORM') {
+      return { ...state, abrirFormulario: !state.abrirFormulario }
+    }
+    if (action.type === 'TOGGLE_EDIT_DATE') {
+      return { ...state, editandoData: !state.editandoData }
+    }
+    if (action.type === 'SET_LOADING') {
+      return { ...state, loading: action.value }
+    }
+    return state
   }
 
   const usePendingFormState = () => {
