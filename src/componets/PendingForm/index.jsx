@@ -68,6 +68,11 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     dispatch({ type: 'SET_FIELD', field: 'editandoData', value: state.editandoData })
   }
 
+  const handleDeleteData = (id) => {
+    deleteReport(id)
+    dispatch({ type: 'RESET' })
+  }
+
   const sendMessageOnWhatsapp = async () => {
     dispatch({ type: 'SET_LOADING', value: true })
     try {
@@ -116,9 +121,9 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
       pendencias: state.gerouPendencia ? state.pendencia : '',
     }
     addReport(newReport)
-    if (state.gerouPendencia && state.pendencia.trim() !== '') {
-      await sendMessageOnWhatsapp()
-    }
+    // if (state.gerouPendencia && state.pendencia.trim() !== '') {
+    //   await sendMessageOnWhatsapp()
+    // }
     dispatch({ type: 'RESET' })
   }
 
@@ -311,7 +316,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
               <div>
               <FaTrash
                 style={{ cursor: 'pointer', color: 'red' }}
-                onClick={() => deleteReport(relatorio.id)}
+                onClick={() => handleDeleteData(relatorio.id)}
                 />
               </div>
                 </CardPlantao>              
