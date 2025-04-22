@@ -26,7 +26,7 @@ const initialState = {
     if (action.type === 'RESET') {
       return {
         ...initialState,
-        data: state.data,
+        tecnico: action.tecnico || initialState.tecnico
       }
     }
     if (action.type === 'SET_OPENFORM') {

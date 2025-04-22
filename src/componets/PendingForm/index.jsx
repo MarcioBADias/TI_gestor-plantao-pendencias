@@ -68,11 +68,6 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     dispatch({ type: 'SET_FIELD', field: 'editandoData', value: state.editandoData })
   }
 
-  const handleDeleteData = (id) => {
-    deleteReport(id)
-    dispatch({ type: 'RESET' })
-  }
-
   const sendMessageOnWhatsapp = async () => {
     dispatch({ type: 'SET_LOADING', value: true })
     try {
@@ -125,6 +120,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     //   await sendMessageOnWhatsapp()
     // }
     dispatch({ type: 'RESET' })
+    dispatch({ type: 'SET_FIELD', field: 'tecnico', value: selectTech })
   }
 
   return (
@@ -316,7 +312,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
               <div>
               <FaTrash
                 style={{ cursor: 'pointer', color: 'red' }}
-                onClick={() => handleDeleteData(relatorio.id)}
+                onClick={() => deleteReport(relatorio.id)}
                 />
               </div>
                 </CardPlantao>              
