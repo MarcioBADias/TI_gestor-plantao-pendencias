@@ -121,6 +121,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
     // }
     dispatch({ type: 'RESET' })
     dispatch({ type: 'SET_FIELD', field: 'tecnico', value: selectTech })
+    window.location.reload();
   }
 
   return (
