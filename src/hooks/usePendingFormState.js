@@ -26,7 +26,7 @@ const initialState = {
     if (action.type === 'RESET') {
       return {
         ...initialState,
-        data: state.data,
+        tecnico: action.tecnico || initialState.tecnico
       }
     }
     if (action.type === 'SET_OPENFORM') {
@@ -42,7 +42,7 @@ const initialState = {
   }
 
   const usePendingFormState = () => {
-    const [state, dispatch] = useReducer
+    const [state, dispatch] = useReducer(reducer, initialState)
     return { state, dispatch }
   }
 
