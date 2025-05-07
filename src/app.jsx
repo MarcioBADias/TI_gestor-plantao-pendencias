@@ -1,38 +1,64 @@
 import { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom'
 import { Calendar } from './componets/Calendar/Calendar'
 import { PendingForm } from './componets/PendingForm'
 
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(null)
   const [selectTech, setSelectTech] = useState(null)
-  const [formIsOpen, setFormIsOpen] = useState(false)
-
-  const handleClick = (iten) => {
-    setSelectedDay(iten.currentDate)
-    setSelectTech(iten.technician)
-    setFormIsOpen(true)
-  }
-
-  const handleCloseForm = () => {
-    setFormIsOpen(false)
-    setSelectedDay(null)
-  }
 
   return (
-    <>
+    <Router>
       <img
         style={{ maxWidth: '20vw', marginTop: 50 }}
         src="/Logo_noSymbol_BK.png"
         alt="Logo"
       />
 
-      {formIsOpen && selectedDay ? (
-        <PendingForm selectedDate={selectedDay} selectTech={selectTech} onClose={handleCloseForm} />
-      ) : (
-        <Calendar onClickedDay={handleClick} />
-      )}
-    </>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              setSelectedDay={setSelectedDay}
+              setSelectTech={setSelectTech}
+            />
+          }
+        />
+        <Route
+          path="/incident-sheet"
+          element={
+            selectedDay ? (
+              <PendingForm
+                selectedDate={selectedDay}
+                selectTech={selectTech}
+                onClose={() => window.history.back()}
+              />
+            ) : (
+              <div>Selecione um item no calendário primeiro.</div>
+            )
+          }
+        />
+      </Routes>
+    </Router>
   )
+}
+
+const Home = ({ setSelectedDay, setSelectTech }) => {
+  const navigate = useNavigate()
+
+  const handleClick = (item) => {
+    setSelectedDay(item.currentDate)
+    setSelectTech(item.technician)
+    navigate('/incident-sheet')
+  }
+
+  return <Calendar onClickedDay={handleClick} />
 }
 
 export { App }
