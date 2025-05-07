@@ -303,7 +303,7 @@ const PendingForm = ({ selectTech, selectedDate, onClose }) => {
             width: 40,
             height: 40,
             cursor: state.abrirFormulario ? 'pointer' : 'not-allowed',
-            color: state.abrirFormulario ? '#28a745' : '#ccc', // verde ativo, cinza desativado
+            color: state.abrirFormulario ? '#28a745' : '#ccc',
           }}
           onClick={state.abrirFormulario ? handleSubmit : undefined}
         />
