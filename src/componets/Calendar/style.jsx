@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const CalendarContainer = styled.div`
   background-color: #fefefe;
@@ -9,7 +9,7 @@ export const CalendarContainer = styled.div`
   margin: 30px auto;
   padding: 20px;
   width: 90vw;
-  `;
+`
 
 export const CalendarHeader = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ export const CalendarHeader = styled.div`
     font-size: 1.2rem;
     text-transform: capitalize;
   }
-`;
+`
 
 export const NavButton = styled.button`
   background: #0077ff;
@@ -35,7 +35,7 @@ export const NavButton = styled.button`
   &:hover {
     background: #005fcc;
   }
-`;
+`
 
 export const WeekDays = styled.div`
   display: grid;
@@ -44,22 +44,21 @@ export const WeekDays = styled.div`
   text-align: center;
   margin-bottom: 8px;
   height: 100%;
-`;
+`
 
 export const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
-
-`;
+`
 
 export const Day = styled.div`
-  background-color: ${({ isActive }) => isActive ? '#e0f7fa' : '#fff'};
-  color: ${({ hasTech }) => hasTech ? '#00695c' : '#000'};
+  background-color: ${({ isActive }) => (isActive ? '#e0f7fa' : '#fff')};
+  background-color: ${({ hasTech }) => hasTech && '#0fcf2f8d'};
+  color: ${({ hasTech }) => (hasTech ? '#00695c' : '#000')};
   text-align: center;
   padding: 10px 0;
   border-radius: 8px;
-  background-color: #f3f3f3;
   height: 100px;
   cursor: pointer;
   font-size: clamp(0.7rem, 1.2vw, 1rem);
@@ -74,8 +73,9 @@ export const Day = styled.div`
     background-color: #dceeff;
   }
 
-  p, span, select {
+  p,
+  span,
+  select {
     font-size: inherit;
   }
-`;
-
+`

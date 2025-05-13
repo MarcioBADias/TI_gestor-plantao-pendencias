@@ -5,13 +5,14 @@ import {
   CalendarGrid,
   Day,
   WeekDays,
-  NavButton
+  NavButton,
 } from './style'
 import { FiEdit3, FiCheckSquare } from 'react-icons/fi'
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://uhxambgdjkmdgoarezto.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeGFtYmdkamttZGdvYXJlenRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjM2OTksImV4cCI6MjA1OTE5OTY5OX0.eWbosa73xQPofo4_nantz5gKlLPRFuiYBRcIu0fZTMg'
+const supabaseKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeGFtYmdkamttZGdvYXJlenRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjM2OTksImV4cCI6MjA1OTE5OTY5OX0.eWbosa73xQPofo4_nantz5gKlLPRFuiYBRcIu0fZTMg'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
@@ -64,10 +65,10 @@ const Calendar = ({ onClickedDay }) => {
     }
 
     const formatted = {}
-    data.forEach(item => {
-      formatted[item.data] = { 
+    data.forEach((item) => {
+      formatted[item.data] = {
         id_tech: item.id_tecnico,
-        checked: item.checked
+        checked: item.checked,
       }
     })
 
@@ -81,7 +82,9 @@ const Calendar = ({ onClickedDay }) => {
   const handleTechChange = async (dateKey, technician) => {
     const { error } = await supabase
       .from('plantoes')
-      .upsert([{ data: dateKey, id_tecnico: technician }], { onConflict: ['data'] })
+      .upsert([{ data: dateKey, id_tecnico: technician }], {
+        onConflict: ['data'],
+      })
 
     if (error) {
       console.error('Erro ao salvar técnico:', error.message)
@@ -104,14 +107,25 @@ const Calendar = ({ onClickedDay }) => {
       const dateKey = selectedFullDate.toISOString().split('T')[0]
       const dayData = techPerDay[dateKey] || {}
       const currentTechId = techPerDay[dateKey]?.id_tech
-      const currentTech = technicians.find(tech => tech.id === dayData.id_tech)?.display_name || 'Selecione um técnico'
+      const currentTech =
+        technicians.find((tech) => tech.id === dayData.id_tech)?.display_name ||
+        'Selecione um técnico'
       const isEditing = editingDate === dateKey
       const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
       const isChecked = dayData.checked === true
 
-
       days.push(
-        <Day key={dateKey} isActive={checkedField} onClick={() => onClickedDay({ currentDate: selectedFullDate, technician: currentTech })}>
+        <Day
+          key={dateKey}
+          isActive={checkedField}
+          hasTech={isChecked}
+          onClick={() =>
+            onClickedDay({
+              currentDate: selectedFullDate,
+              technician: currentTech,
+            })
+          }
+        >
           {day}
           <p style={{ marginTop: 10 }}>Técnico de Plantão:</p>
           {isEditing ? (
@@ -120,54 +134,62 @@ const Calendar = ({ onClickedDay }) => {
               onChange={(e) => handleTechChange(dateKey, e.target.value)}
               onClick={(e) => e.stopPropagation()}
             >
-              <option value="" disabled>Selecione</option>
-              {technicians.map(tech => (
-                <option key={tech.id} value={tech.id}>{tech.display_name}</option>
+              <option value="" disabled>
+                Selecione
+              </option>
+              {technicians.map((tech) => (
+                <option key={tech.id} value={tech.id}>
+                  {tech.display_name}
+                </option>
               ))}
             </select>
           ) : (
             <>
-              <span><strong>{currentTech}</strong></span>
-              { passedDate && <FiEdit3
-                style={{ cursor: 'pointer', marginLeft: 8 }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setEditingDate(dateKey)
-                }}
-              />}
+              <span>
+                <strong>{currentTech}</strong>
+              </span>
+              {passedDate && (
+                <FiEdit3
+                  style={{ cursor: 'pointer', marginLeft: 8 }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setEditingDate(dateKey)
+                  }}
+                />
+              )}
               <p>
+                <FiCheckSquare
+                  style={{
+                    cursor: isChecked ? 'default' : 'pointer',
+                  }}
+                  onClick={async (e) => {
+                    e.stopPropagation()
 
-              <FiCheckSquare
-                style={{
-                  color: isChecked ? 'green' : 'gray',
-                  cursor: isChecked ? 'default' : 'pointer'
-                }}
-                onClick={async (e) => {
-                  e.stopPropagation()
-              
-                  const { error } = await supabase
-                    .from('plantoes')
-                    .upsert([{
-                      data: dateKey,
-                      id_tecnico: currentTechId || null,
-                      checked: !isChecked
-                    }], {
-                      onConflict: ['data']
-                    })
-              
-                  if (error) {
-                    console.error('Erro ao atualizar checked:', error.message)
-                    return
-                  }
-              
-                  await fetchPlantaoData()
-                }}
-              />
+                    const { error } = await supabase.from('plantoes').upsert(
+                      [
+                        {
+                          data: dateKey,
+                          id_tecnico: currentTechId || null,
+                          checked: !isChecked,
+                        },
+                      ],
+                      {
+                        onConflict: ['data'],
+                      },
+                    )
+
+                    if (error) {
+                      console.error('Erro ao atualizar checked:', error.message)
+                      return
+                    }
+
+                    await fetchPlantaoData()
+                  }}
+                />
               </p>
-
             </>
           )}
-        </Day>
+        </Day>,
       )
     }
 
@@ -178,12 +200,19 @@ const Calendar = ({ onClickedDay }) => {
     <CalendarContainer>
       <CalendarHeader>
         <NavButton onClick={prevMonth}>←</NavButton>
-        <h2>{currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</h2>
+        <h2>
+          {currentDate.toLocaleDateString('pt-BR', {
+            month: 'long',
+            year: 'numeric',
+          })}
+        </h2>
         <NavButton onClick={nextMonth}>→</NavButton>
       </CalendarHeader>
 
       <WeekDays>
-        {daysOfWeek.map(day => <span key={day}>{day}</span>)}
+        {daysOfWeek.map((day) => (
+          <span key={day}>{day}</span>
+        ))}
       </WeekDays>
 
       <CalendarGrid>{generateDays()}</CalendarGrid>
