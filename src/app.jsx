@@ -10,6 +10,7 @@ import { Calendar } from './componets/Calendar/Calendar'
 import { PendingForm } from './componets/PendingForm'
 import { useAuth } from './context/AuthContext'
 import { Auth } from './pages/Auth'
+import { Header } from './componets/Header'
 
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(null)
@@ -45,11 +46,7 @@ const AppRoutes = ({
 
   return (
     <>
-      <img
-        style={{ maxWidth: '20vw', marginTop: 50 }}
-        src="/Logo_noSymbol_BK.png"
-        alt="Logo"
-      />
+      <Header />
 
       <Routes>
         <Route path="/login" element={<Auth />} />
