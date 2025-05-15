@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
+  useLocation,
 } from 'react-router-dom'
 import { Calendar } from './componets/Calendar/Calendar'
 import { PendingForm } from './componets/PendingForm'
+import { useAuth } from './context/AuthContext'
+import { Auth } from './pages/Auth'
 
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(null)
@@ -14,6 +17,34 @@ const App = () => {
 
   return (
     <Router>
+      <AppRoutes
+        selectedDay={selectedDay}
+        selectTech={selectTech}
+        setSelectedDay={setSelectedDay}
+        setSelectTech={setSelectTech}
+      />
+    </Router>
+  )
+}
+
+const AppRoutes = ({
+  selectedDay,
+  selectTech,
+  setSelectedDay,
+  setSelectTech,
+}) => {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (!user && location.pathname !== '/login') {
+      navigate('/login')
+    }
+  }, [user, location.pathname, navigate])
+
+  return (
+    <>
       <img
         style={{ maxWidth: '20vw', marginTop: 50 }}
         src="/Logo_noSymbol_BK.png"
@@ -21,35 +52,40 @@ const App = () => {
       />
 
       <Routes>
+        <Route path="/login" element={<Auth />} />
         <Route
           path="/"
           element={
-            <Home
-              setSelectedDay={setSelectedDay}
-              setSelectTech={setSelectTech}
-            />
+            user ? (
+              <CalendarWrapper
+                setSelectedDay={setSelectedDay}
+                setSelectTech={setSelectTech}
+              />
+            ) : null
           }
         />
         <Route
           path="/incident-sheet"
           element={
-            selectedDay ? (
-              <PendingForm
-                selectedDate={selectedDay}
-                selectTech={selectTech}
-                onClose={() => window.history.back()}
-              />
-            ) : (
-              <div>Selecione um item no calendário primeiro.</div>
-            )
+            user ? (
+              selectedDay ? (
+                <PendingForm
+                  selectedDate={selectedDay}
+                  selectTech={selectTech}
+                  onClose={() => navigate(-1)}
+                />
+              ) : (
+                <div>Selecione um item no calendário primeiro.</div>
+              )
+            ) : null
           }
         />
       </Routes>
-    </Router>
+    </>
   )
 }
 
-const Home = ({ setSelectedDay, setSelectTech }) => {
+const CalendarWrapper = ({ setSelectedDay, setSelectTech }) => {
   const navigate = useNavigate()
 
   const handleClick = (item) => {
