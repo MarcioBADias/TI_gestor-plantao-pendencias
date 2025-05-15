@@ -31,6 +31,7 @@ const Auth = () => {
   return (
     <Container>
       <Title>{state.isLogin ? 'Login' : 'Cadastro'}</Title>
+
       <form onSubmit={handleSubmit}>
         {!state.isLogin && (
           <Input
@@ -46,6 +47,7 @@ const Auth = () => {
             }
           />
         )}
+
         <Input
           type="email"
           placeholder="Email"
@@ -58,6 +60,7 @@ const Auth = () => {
             })
           }
         />
+
         <Input
           type="password"
           placeholder="Senha"
@@ -70,13 +73,16 @@ const Auth = () => {
             })
           }
         />
+
         <AddBtn type="submit">{state.isLogin ? 'Entrar' : 'Cadastrar'}</AddBtn>
       </form>
+
       <AddBtn onClick={() => dispatch({ type: 'TOGGLE_MODE' })}>
         {state.isLogin
           ? 'Não tem conta? Cadastre-se'
           : 'Já tem conta? Faça login'}
       </AddBtn>
+
       {state.error && <p style={{ color: 'red' }}>{state.error}</p>}
     </Container>
   )
