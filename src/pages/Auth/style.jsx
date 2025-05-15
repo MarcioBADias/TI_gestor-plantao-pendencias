@@ -12,6 +12,11 @@ export const Title = styled.h1`
   font-size: 1.8rem;
   color: #333;
 `
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export const Input = styled.input`
   margin: 0.5rem 0;

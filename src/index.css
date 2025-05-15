@@ -17,6 +17,10 @@
 
 body {
   align-items: center;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('/Logo_Symbil_Blue.png') no-repeat right top fixed,
+    var(--color-light);
   width: 100%;
   min-height: 100vh;
   display: flex;

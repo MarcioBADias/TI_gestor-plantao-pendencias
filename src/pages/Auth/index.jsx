@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container, Input, AddBtn, Title } from './style'
+import { Container, Form, Input, AddBtn, Title } from './style'
 import { useAuthFormState } from '../../hooks/useAuthFormState'
 import { useAuth } from '../../context/AuthContext'
 
@@ -32,7 +32,7 @@ const Auth = () => {
     <Container>
       <Title>{state.isLogin ? 'Login' : 'Cadastro'}</Title>
 
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         {!state.isLogin && (
           <Input
             type="text"
@@ -75,7 +75,7 @@ const Auth = () => {
         />
 
         <AddBtn type="submit">{state.isLogin ? 'Entrar' : 'Cadastrar'}</AddBtn>
-      </form>
+      </Form>
 
       <AddBtn onClick={() => dispatch({ type: 'TOGGLE_MODE' })}>
         {state.isLogin
