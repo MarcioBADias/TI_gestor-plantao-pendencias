@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,11 +5,12 @@ import {
   useNavigate,
   useLocation,
 } from 'react-router-dom'
-import { Calendar } from './componets/Calendar/Calendar'
 import { PendingForm } from './componets/PendingForm'
 import { useAuth } from './context/AuthContext'
 import { Auth } from './pages/Auth'
 import { Header } from './componets/Header'
+import CalendarPage from './pages/CalendarPage'
+import { useState, useEffect } from 'react'
 
 const App = () => {
   const [selectedDay, setSelectedDay] = useState(null)
@@ -47,14 +47,13 @@ const AppRoutes = ({
   return (
     <>
       <Header />
-
       <Routes>
         <Route path="/login" element={<Auth />} />
         <Route
           path="/"
           element={
             user ? (
-              <CalendarWrapper
+              <CalendarPage
                 setSelectedDay={setSelectedDay}
                 setSelectTech={setSelectTech}
               />
@@ -80,18 +79,6 @@ const AppRoutes = ({
       </Routes>
     </>
   )
-}
-
-const CalendarWrapper = ({ setSelectedDay, setSelectTech }) => {
-  const navigate = useNavigate()
-
-  const handleClick = (item) => {
-    setSelectedDay(item.currentDate)
-    setSelectTech(item.technician)
-    navigate('/incident-sheet')
-  }
-
-  return <Calendar onClickedDay={handleClick} />
 }
 
 export { App }
