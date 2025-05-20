@@ -1,5 +1,11 @@
 import React from 'react'
-import { FaCalendarDay } from 'react-icons/fa'
+import { BsKanbanFill } from 'react-icons/bs'
+import {
+  FaCalendarDay,
+  FaClipboardList,
+  FaCloudDownloadAlt,
+  FaInfoCircle,
+} from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { Container, IconButton, IconConted, Title } from './style'
 
@@ -13,33 +19,33 @@ const Home = () => {
   return (
     <Container>
       <IconConted>
-        <IconButton onClick={handleClick} title="Ir para calendário">
+        <IconButton onClick={handleClick}>
           <FaCalendarDay />
           <Title>Calendario de plantoes</Title>
         </IconButton>
       </IconConted>
       <IconConted>
-        <IconButton onClick={handleClick} title="Ir para calendário">
-          <FaCalendarDay />
-          <Title>Calendario de plantoes</Title>
+        <IconButton>
+          <FaClipboardList />
+          <Title>Lista de clientes CLTRON</Title>
         </IconButton>
       </IconConted>
       <IconConted>
-        <IconButton onClick={handleClick} title="Ir para calendário">
-          <FaCalendarDay />
-          <Title>Calendario de plantoes</Title>
+        <IconButton>
+          <BsKanbanFill />
+          <Title>Sistema de implantacoes</Title>
         </IconButton>
       </IconConted>
       <IconConted>
-        <IconButton onClick={handleClick} title="Ir para calendário">
-          <FaCalendarDay />
-          <Title>Calendario de plantoes</Title>
+        <IconButton>
+          <FaCloudDownloadAlt />
+          <Title>Ferramentas e App</Title>
         </IconButton>
       </IconConted>
       <IconConted>
-        <IconButton onClick={handleClick} title="Ir para calendário">
-          <FaCalendarDay />
-          <Title>Calendario de plantoes</Title>
+        <IconButton>
+          <FaInfoCircle />
+          <Title>Info uteis</Title>
         </IconButton>
       </IconConted>
     </Container>

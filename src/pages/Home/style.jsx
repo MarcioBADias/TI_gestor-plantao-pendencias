@@ -17,10 +17,11 @@ export const IconButton = styled.div`
   font-size: 4rem;
   cursor: pointer;
   transition: transform 0.2s ease;
-  color: #007bff;
+  color: var(--color-primary);
 
   &:hover {
     transform: scale(1.1);
+    color: var(--color-dark);
   }
 `
 export const Title = styled.p`
