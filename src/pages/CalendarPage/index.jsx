@@ -13,4 +13,4 @@ const CalendarPage = ({ setSelectedDay, setSelectTech }) => {
   return <Calendar onClickedDay={handleClick} />
 }
 
-export default CalendarPage
+export { CalendarPage }
