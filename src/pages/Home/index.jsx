@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaCalendarDay } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { Container, IconButton } from './style'
+import { Container, IconButton, IconConted, Title } from './style'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -12,10 +12,36 @@ const Home = () => {
 
   return (
     <Container>
-      <IconButton onClick={handleClick} title="Ir para calendário">
-        <FaCalendarDay />
-        <p>Calendario de plantoes</p>
-      </IconButton>
+      <IconConted>
+        <IconButton onClick={handleClick} title="Ir para calendário">
+          <FaCalendarDay />
+          <Title>Calendario de plantoes</Title>
+        </IconButton>
+      </IconConted>
+      <IconConted>
+        <IconButton onClick={handleClick} title="Ir para calendário">
+          <FaCalendarDay />
+          <Title>Calendario de plantoes</Title>
+        </IconButton>
+      </IconConted>
+      <IconConted>
+        <IconButton onClick={handleClick} title="Ir para calendário">
+          <FaCalendarDay />
+          <Title>Calendario de plantoes</Title>
+        </IconButton>
+      </IconConted>
+      <IconConted>
+        <IconButton onClick={handleClick} title="Ir para calendário">
+          <FaCalendarDay />
+          <Title>Calendario de plantoes</Title>
+        </IconButton>
+      </IconConted>
+      <IconConted>
+        <IconButton onClick={handleClick} title="Ir para calendário">
+          <FaCalendarDay />
+          <Title>Calendario de plantoes</Title>
+        </IconButton>
+      </IconConted>
     </Container>
   )
 }

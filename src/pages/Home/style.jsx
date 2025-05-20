@@ -2,11 +2,17 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
+  margin-top: 5rem;
+  padding: 2rem;
   height: 100vh;
+  width: 100vw;
 `
-
+export const IconConted = styled.div`
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+`
 export const IconButton = styled.div`
   font-size: 4rem;
   cursor: pointer;
@@ -16,4 +22,7 @@ export const IconButton = styled.div`
   &:hover {
     transform: scale(1.1);
   }
+`
+export const Title = styled.p`
+  font-size: 1rem;
 `
