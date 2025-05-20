@@ -12,21 +12,21 @@ import { Container, IconButton, IconConted, Title } from './style'
 const Home = () => {
   const navigate = useNavigate()
 
-  const handleClick = () => {
-    navigate('/calendar')
+  const handleClick = (path) => {
+    navigate(path)
   }
 
   return (
     <Container>
       <IconConted>
-        <IconButton onClick={handleClick}>
+        <IconButton onClick={() => handleClick('/calendar')}>
           <FaCalendarDay />
           <Title>Calendario de plantoes</Title>
         </IconButton>
       </IconConted>
       <IconConted>
         <IconButton>
-          <FaClipboardList />
+          <FaClipboardList onClick={() => handleClick('/cltron')} />
           <Title>Lista de clientes CLTRON</Title>
         </IconButton>
       </IconConted>
