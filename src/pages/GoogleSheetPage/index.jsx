@@ -34,7 +34,11 @@ const GoogleSheetPage = () => {
     <div>
       <h2>Dados da planilha</h2>
       <div>
-        <a scr='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'> Lista de Clientes Tronsoft </a>
+        <a 
+          hrf='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
+          target="_blank"
+          > 
+          Lista de Clientes Tronsoft </a>
       </div>
       <ul>
         {data.map((item, index) => (
