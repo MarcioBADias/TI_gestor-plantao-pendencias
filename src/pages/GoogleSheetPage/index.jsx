@@ -34,11 +34,7 @@ const GoogleSheetPage = () => {
     <div>
       <h2>Dados da planilha</h2>
       <div>
-        <iframe 
-          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQETzR_zkC8rWwxGyOJYCwGMK4eK-AOvzDrAFAaLfAjUYmc42hLGw5YzMg4NbUvr4_l6qkOTDdiwksg/pubhtml?gid=297320331&amp;single=true&amp;widget=true&amp;headers=false"
-          style={{ width: '80vw', height: '90vh'}}
-          >
-        </iframe>
+        <a scr='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'> Lista de Clientes Tronsoft </a>
       </div>
       <ul>
         {data.map((item, index) => (
