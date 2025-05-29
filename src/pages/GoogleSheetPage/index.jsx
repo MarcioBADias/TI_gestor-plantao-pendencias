@@ -43,7 +43,7 @@ const GoogleSheetPage = () => {
       </div>
       <div>
          <a 
-          href='https://drive.google.com/file/d/1_0VH42WUHi1ereKpnvQ-wvnN7eEbzMId/view'
+          href='https://drive.usercontent.google.com/download?id=1_0VH42WUHi1ereKpnvQ-wvnN7eEbzMId&export=download&authuser=0'
           target='_blanck'
          >
           Gestor de Licenças Tronsoft (Download)
