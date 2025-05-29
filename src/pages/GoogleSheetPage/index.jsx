@@ -40,6 +40,12 @@ const GoogleSheetPage = () => {
         >
           Lista de Clientes Tronsoft
         </a>
+        <a 
+          href='https://drive.google.com/file/d/1_0VH42WUHi1ereKpnvQ-wvnN7eEbzMId/view'
+          target='_blanck'
+         >
+          Gestor Tronsoft
+        </a>
       </div>
       <ul>
         {data.map((item, index) => (
