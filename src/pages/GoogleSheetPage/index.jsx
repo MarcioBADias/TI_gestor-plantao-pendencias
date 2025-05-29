@@ -30,15 +30,25 @@ const GoogleSheetPage = () => {
     fetchData()
   }, [])
 
+  const handleButtonClick = () => {
+    window.open('https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502', '_blank')
+  }
+
   return (
     <div>
       <h2>Dados da planilha</h2>
       <div>
-        <a 
-          hrf='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
+        <a
+          href='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
           target="_blank"
-          > 
-          Lista de Clientes Tronsoft </a>
+        >
+          Lista de Clientes Tronsoft
+        </a>
+      </div>
+      <div>
+        <button onClick={handleButtonClick}>
+          Acessar Lista de Clientes Tronsoft
+        </button>
       </div>
       <ul>
         {data.map((item, index) => (
