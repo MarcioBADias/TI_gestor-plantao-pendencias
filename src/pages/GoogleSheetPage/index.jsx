@@ -33,6 +33,7 @@ const GoogleSheetPage = () => {
   return (
     <div>
       <h2>Dados da planilha</h2>
+      <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQETzR_zkC8rWwxGyOJYCwGMK4eK-AOvzDrAFAaLfAjUYmc42hLGw5YzMg4NbUvr4_l6qkOTDdiwksg/pubhtml?gid=297320331&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
       <ul>
         {data.map((item, index) => (
           <li key={index}>{JSON.stringify(item)}</li>
