@@ -26,7 +26,12 @@ const Home = () => {
       </IconConted>
       <IconConted>
         <IconButton>
-          <FaClipboardList onClick={() => handleClick('/cltron')} />
+          <a
+          href='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
+          target="_blank"
+        >
+          <FaClipboardList />
+            </a>
           <Title>Lista de clientes CLTRON</Title>
         </IconButton>
       </IconConted>
