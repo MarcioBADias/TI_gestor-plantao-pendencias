@@ -24,6 +24,13 @@ export const IconButton = styled.div`
     color: var(--color-dark);
   }
 `
+export const DirectLink = styled.a`
+  :visited {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+`
+
 export const Title = styled.p`
   font-size: 1rem;
 `
