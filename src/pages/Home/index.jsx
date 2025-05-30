@@ -29,6 +29,7 @@ const Home = () => {
           <a
           href='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
           target="_blank"
+          style={{ text-decoration: 'none' }}
         >
           <FaClipboardList />
             </a>
