@@ -7,7 +7,7 @@ import {
   FaInfoCircle,
 } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import { Container, IconButton, IconConted, Title } from './style'
+import { Container, IconButton, IconConted, DirectLink, Title } from './style'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -26,13 +26,13 @@ const Home = () => {
       </IconConted>
       <IconConted>
         <IconButton>
-          <a
+          <DirectLink
           href='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
           target="_blank"
           style={{ text-decoration: 'none' }}
         >
           <FaClipboardList />
-            </a>
+            </DirectLink>
           <Title>Lista de clientes CLTRON</Title>
         </IconButton>
       </IconConted>
