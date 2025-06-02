@@ -148,7 +148,7 @@ const Calendar = ({ onClickedDay }) => {
               <span>
                 <strong>{currentTech}</strong>
               </span>
-              {technicians.adm && (
+              {tech.adm && (
                 <FiEdit3
                   style={{ cursor: 'pointer', marginLeft: 8 }}
                   onClick={(e) => {
