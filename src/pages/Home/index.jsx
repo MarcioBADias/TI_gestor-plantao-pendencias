@@ -29,7 +29,7 @@ const Home = () => {
           <DirectLink
           href='https://www.appsheet.com/start/cf33a55a-7f0e-4a79-a096-b8cbae15c502'
           target="_blank"
-          style={{ text-decoration: 'none' }}
+          style={{ textDecoration: 'none' }}
         >
           <FaClipboardList />
             </DirectLink>
