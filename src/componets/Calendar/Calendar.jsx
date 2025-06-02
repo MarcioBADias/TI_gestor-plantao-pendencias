@@ -37,7 +37,7 @@ const Calendar = ({ onClickedDay }) => {
     const fetchTechnicians = async () => {
       const { data, error } = await supabase
         .from('users')
-        .select('id, display_name')
+        .select('id, display_name, adm')
 
       if (error) {
         console.error('Erro ao buscar técnicos:', error.message)
@@ -45,8 +45,6 @@ const Calendar = ({ onClickedDay }) => {
       }
 
       setTechnicians(data)
-      console.log(technicians.adm)
-      console.log(technicians)
     }
 
     fetchTechnicians()
