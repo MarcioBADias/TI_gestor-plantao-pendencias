@@ -10,7 +10,7 @@ import {
 import { FiEdit3, FiCheckSquare } from 'react-icons/fi'
 import { supabase } from '../../supabaseClient'
 
-const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+const daysOfWeek = [ 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom' ]
 
 const Calendar = ({ onClickedDay }) => {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -21,7 +21,13 @@ const Calendar = ({ onClickedDay }) => {
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
-  const firstDayOfMonth = new Date(year, month, 1).getDay()
+
+  const getAdjustedFirstDayOfMonth = () => {
+    const firstDay = new Date(year, month, 1).getDay() 
+    return firstDay === 0 ? 6 : firstDay - 1 
+  }
+  
+  const firstDayOfMonth = getAdjustedFirstDayOfMonth()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
 
   const prevMonth = () => setCurrentDate(new Date(year, month - 1))
