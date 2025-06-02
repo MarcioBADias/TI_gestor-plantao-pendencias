@@ -48,6 +48,7 @@ const Calendar = ({ onClickedDay }) => {
     }
 
     fetchTechnicians()
+    console.log(technicians)
   }, [])
 
   const fetchPlantaoData = async () => {
