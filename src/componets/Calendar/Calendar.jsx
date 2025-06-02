@@ -45,6 +45,8 @@ const Calendar = ({ onClickedDay }) => {
       }
 
       setTechnicians(data)
+      console.log(technicians.adm)
+      console.log(technicians)
     }
 
     fetchTechnicians()
@@ -148,7 +150,7 @@ const Calendar = ({ onClickedDay }) => {
               <span>
                 <strong>{currentTech}</strong>
               </span>
-              {tech.adm && (
+              {technicians.adm && (
                 <FiEdit3
                   style={{ cursor: 'pointer', marginLeft: 8 }}
                   onClick={(e) => {
