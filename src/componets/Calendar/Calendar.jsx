@@ -112,7 +112,6 @@ const Calendar = ({ onClickedDay }) => {
         technicians.find((tech) => tech.id === dayData.id_tech)?.display_name ||
         'Selecione um técnico'
       const isEditing = editingDate === dateKey
-      const passedDate = new Date() <= new Date(selectedFullDate.toDateString())
       const isChecked = dayData.checked === true
 
       days.push(
@@ -149,7 +148,7 @@ const Calendar = ({ onClickedDay }) => {
               <span>
                 <strong>{currentTech}</strong>
               </span>
-              {passedDate && (
+              {technicians.adm && (
                 <FiEdit3
                   style={{ cursor: 'pointer', marginLeft: 8 }}
                   onClick={(e) => {
