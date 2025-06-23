@@ -13,6 +13,7 @@ import { CalendarPage } from './pages/CalendarPage'
 import { PendingForm } from './componets/PendingForm'
 import { Home } from './pages/Home'
 import { GoogleSheetPage } from './pages/GoogleSheetPage'
+import { InfoUteisPage } from './pages/InfoUteisPage'
 
 const AppRoutes = () => {
   const [selectedDay, setSelectedDay] = useState(null)
@@ -62,6 +63,10 @@ const AppRoutes = () => {
             <Navigate to="/login" />
           )
         }
+      />
+       <Route
+        path="/info-uteis"
+        element={user ? <InfoUteisPage /> : <Navigate to="/login" />} // Protegida por autenticação
       />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

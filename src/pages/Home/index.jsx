@@ -5,15 +5,15 @@ import {
   FaClipboardList,
   FaCloudDownloadAlt,
   FaInfoCircle,
-} from 'react-icons/fa'
+} from 'react-icons/fa' 
 import { useNavigate } from 'react-router-dom'
-import { Container, IconButton, IconConted, DirectLink, Title } from './style'
+import { Container, IconButton, IconConted, DirectLink, Title } from './style' // Certifique-se de que os componentes de estilo estão importados
 
 const Home = () => {
   const navigate = useNavigate()
 
   const handleClick = (path) => {
-    navigate(path)
+    navigate(path) 
   }
 
   return (
@@ -49,7 +49,7 @@ const Home = () => {
         </IconButton>
       </IconConted>
       <IconConted>
-        <IconButton>
+        <IconButton onClick={() => handleClick('/info-uteis')}> 
           <FaInfoCircle />
           <Title>Info uteis</Title>
         </IconButton>
