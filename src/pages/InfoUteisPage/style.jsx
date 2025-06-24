@@ -13,7 +13,7 @@ export const Title = styled.h1`
   color: var(--color-dark);
 `
 
-export const SubItem = styled.p`
+export const SubItem = styled.div`
   margin-bottom: 0.5rem;
   color: #333;
 
