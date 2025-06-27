@@ -14,12 +14,7 @@ const Auth = () => {
     dispatch({ type: 'SET_ERROR', error: '' })
 
     const result = state.isLogin
-      ? await login({ email: state.email, password: state.senha })
-      : await register({
-          email: state.email,
-          password: state.senha,
-          display_name: state.nome,
-        })
+      && await login({ email: state.email, password: state.senha })
 
     if (result.error) {
       dispatch({ type: 'SET_ERROR', error: result.error })
@@ -33,7 +28,7 @@ const Auth = () => {
       <Title>{state.isLogin ? 'Login' : 'Cadastro'}</Title>
 
       <Form onSubmit={handleSubmit}>
-        {!state.isLogin && (
+        {/* {!state.isLogin && (
           <Input
             type="text"
             placeholder="Nome completo"
@@ -46,7 +41,7 @@ const Auth = () => {
               })
             }
           />
-        )}
+        )} */}
 
         <Input
           type="email"
@@ -74,14 +69,14 @@ const Auth = () => {
           }
         />
 
-        <AddBtn type="submit">{state.isLogin ? 'Entrar' : 'Cadastrar'}</AddBtn>
+        <AddBtn type="submit">{state.isLogin && 'Entrar'}</AddBtn>
       </Form>
 
-      <AddBtn onClick={() => dispatch({ type: 'TOGGLE_MODE' })}>
+      {/* <AddBtn onClick={() => dispatch({ type: 'TOGGLE_MODE' })}>
         {state.isLogin
           ? 'Não tem conta? Cadastre-se'
           : 'Já tem conta? Faça login'}
-      </AddBtn>
+      </AddBtn> */}
 
       {state.error && <p style={{ color: 'red' }}>{state.error}</p>}
     </Container>
