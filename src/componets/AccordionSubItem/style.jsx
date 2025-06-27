@@ -18,8 +18,6 @@ export const SubTitle = styled.p`
 `
 
 export const SubItemContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
   padding: 1rem;
 `
 

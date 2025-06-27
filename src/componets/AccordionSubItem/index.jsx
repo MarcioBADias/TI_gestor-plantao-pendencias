@@ -4,15 +4,18 @@ import { FaDownload, FaLink } from "react-icons/fa"
 const AccordionSubItem = ({ text, isOpen, isCopiedStatus, urLink, onHandleCopyLink, onHandleDownloadLink }) => (
     <SubItemContainer >
     {isOpen &&
-    <LinkContainer>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
         <p>{text}</p>
         <CopyStatus isVisible={isCopiedStatus}>Copiado</CopyStatus>
-        <FaLink
-        style={{ cursor: 'pointer', color: 'var(--color-primary)' }}
-        onClick={() => onHandleCopyLink(urLink)}
-        />
-        <FaDownload onClick={() => onHandleDownloadLink(urLink)} style={{ cursor: 'pointer', color: 'var(--color-primary)' }}/>
-        </LinkContainer>}
+        <LinkContainer>
+            <FaLink
+            style={{ cursor: 'pointer', color: 'var(--color-primary)' }}
+            onClick={() => onHandleCopyLink(urLink)}
+            />
+            <FaDownload onClick={() => onHandleDownloadLink(urLink)} style={{ cursor: 'pointer', color: 'var(--color-primary)' }}/>
+        </LinkContainer>
+    </div>
+    }
     </SubItemContainer>
 )
 

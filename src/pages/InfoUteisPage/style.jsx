@@ -29,3 +29,17 @@ export const SubTitle = styled.p`
   color: var(--color-primary);
   font-weight: bold;
 `
+
+export const CopyStatus = styled.span`
+  color: green;
+  margin-left: 10px;
+  font-weight: bold;
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  transition: opacity 0.5s ease-in-out;
+`
+
+export const LinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+`
