@@ -40,6 +40,7 @@ const AppRoutes = () => {
             <CalendarPage
               setSelectedDay={setSelectedDay}
               setSelectTech={setSelectTech}
+              isAdmin={user.adm}
             />
           ) : (
             <Navigate to="/login" />

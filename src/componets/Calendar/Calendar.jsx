@@ -12,7 +12,7 @@ import { supabase } from '../../supabaseClient'
 
 const daysOfWeek = [ 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom' ]
 
-const Calendar = ({ onClickedDay }) => {
+const Calendar = ({ onClickedDay, isAdmin }) => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [techPerDay, setTechPerDay] = useState({})
   const [editingDate, setEditingDate] = useState(null)
@@ -129,7 +129,7 @@ const Calendar = ({ onClickedDay }) => {
         >
           {day}
           <p style={{ marginTop: 10 }}>Técnico de Plantão:</p>
-          {isEditing ? (
+          {isEditing && isAdmin ? (
             <select
               value={currentTechId || ''}
               onChange={(e) => handleTechChange(dateKey, e.target.value)}
@@ -149,6 +149,7 @@ const Calendar = ({ onClickedDay }) => {
               <span>
                 <strong>{currentTech}</strong>
               </span>
+<<<<<<< HEAD
               {technicians.adm && (
                 <FiEdit3
                   style={{ cursor: 'pointer', marginLeft: 8 }}
@@ -165,29 +166,52 @@ const Calendar = ({ onClickedDay }) => {
                   }}
                   onClick={async (e) => {
                     e.stopPropagation()
+=======
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {isAdmin && (
+                  <FiEdit3
+                    style={{ cursor: 'pointer', marginLeft: 8 }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setEditingDate(dateKey)
+                    }}
+                  />
+                )}
+                <p>
+                  <FiCheckSquare
+                    style={{
+                      cursor: isChecked ? 'default' : 'pointer',
+                    }}
+                    onClick={async (e) => {
+                      e.stopPropagation()
+>>>>>>> dev
 
-                    const { error } = await supabase.from('plantoes').upsert(
-                      [
+                      const { error } = await supabase.from('plantoes').upsert(
+                        [
+                          {
+                            data: dateKey,
+                            id_tecnico: currentTechId || null,
+                            checked: !isChecked,
+                          },
+                        ],
                         {
-                          data: dateKey,
-                          id_tecnico: currentTechId || null,
-                          checked: !isChecked,
+                          onConflict: ['data'],
                         },
-                      ],
-                      {
-                        onConflict: ['data'],
-                      },
-                    )
+                      )
 
-                    if (error) {
-                      console.error('Erro ao atualizar checked:', error.message)
-                      return
-                    }
+                      if (error) {
+                        console.error(
+                          'Erro ao atualizar checked:',
+                          error.message,
+                        )
+                        return
+                      }
 
-                    await fetchPlantaoData()
-                  }}
-                />
-              </p>
+                      await fetchPlantaoData()
+                    }}
+                  />
+                </p>
+              </div>
             </>
           )}
         </Day>,

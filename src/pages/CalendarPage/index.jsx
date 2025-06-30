@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Calendar } from '../../componets/Calendar/Calendar'
 
-const CalendarPage = ({ setSelectedDay, setSelectTech }) => {
+const CalendarPage = ({ setSelectedDay, setSelectTech, isAdmin }) => {
   const navigate = useNavigate()
 
   const handleClick = ({ currentDate, technician }) => {
@@ -10,7 +10,7 @@ const CalendarPage = ({ setSelectedDay, setSelectTech }) => {
     navigate('/incident-sheet')
   }
 
-  return <Calendar onClickedDay={handleClick} />
+  return <Calendar onClickedDay={handleClick} isAdmin={isAdmin} />
 }
 
 export { CalendarPage }
