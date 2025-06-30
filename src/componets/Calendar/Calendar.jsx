@@ -10,7 +10,7 @@ import {
 import { FiEdit3, FiCheckSquare } from 'react-icons/fi'
 import { supabase } from '../../supabaseClient'
 
-const daysOfWeek = [ 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom' ]
+const daysOfWeek = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
 
 const Calendar = ({ onClickedDay, isAdmin }) => {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -23,10 +23,10 @@ const Calendar = ({ onClickedDay, isAdmin }) => {
   const month = currentDate.getMonth()
 
   const getAdjustedFirstDayOfMonth = () => {
-    const firstDay = new Date(year, month, 1).getDay() 
-    return firstDay === 0 ? 6 : firstDay - 1 
+    const firstDay = new Date(year, month, 1).getDay()
+    return firstDay === 0 ? 6 : firstDay - 1
   }
-  
+
   const firstDayOfMonth = getAdjustedFirstDayOfMonth()
   const daysInMonth = new Date(year, month + 1, 0).getDate()
 
@@ -48,7 +48,6 @@ const Calendar = ({ onClickedDay, isAdmin }) => {
     }
 
     fetchTechnicians()
-    console.log(technicians)
   }, [])
 
   const fetchPlantaoData = async () => {
@@ -149,24 +148,6 @@ const Calendar = ({ onClickedDay, isAdmin }) => {
               <span>
                 <strong>{currentTech}</strong>
               </span>
-<<<<<<< HEAD
-              {technicians.adm && (
-                <FiEdit3
-                  style={{ cursor: 'pointer', marginLeft: 8 }}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setEditingDate(dateKey)
-                  }}
-                />
-              )}
-              <p>
-                <FiCheckSquare
-                  style={{
-                    cursor: isChecked ? 'default' : 'pointer',
-                  }}
-                  onClick={async (e) => {
-                    e.stopPropagation()
-=======
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {isAdmin && (
                   <FiEdit3
@@ -184,7 +165,6 @@ const Calendar = ({ onClickedDay, isAdmin }) => {
                     }}
                     onClick={async (e) => {
                       e.stopPropagation()
->>>>>>> dev
 
                       const { error } = await supabase.from('plantoes').upsert(
                         [

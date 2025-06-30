@@ -1,4 +1,3 @@
-// src/Routes.jsx
 import {
   Routes,
   Route,
@@ -65,7 +64,7 @@ const AppRoutes = () => {
           )
         }
       />
-       <Route
+      <Route
         path="/info-uteis"
         element={user ? <InfoUteisPage /> : <Navigate to="/login" />} // Protegida por autenticação
       />
